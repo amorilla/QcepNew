@@ -21,7 +21,7 @@ class OraganizacioModel implements CRUDable
         }
 
 
-        $portada = $mysqli->prepare("SELECT * FROM Organitzacio");
+        $portada = $mysqli->prepare("SELECT * FROM organitzacio");
         if ($portada === false) {
             die("Error in preparing the SQL query: " . $mysqli->error);
         }
