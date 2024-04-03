@@ -21,18 +21,6 @@
 				<li><a href="#">
 						<?php echo ($textos["Menu"]); ?>
 					</a></li>
-				<li><a href="#">
-						<?php echo (($textos["PHP"])); ?>
-					</a></li>
-				<li><a href="">
-						<?php echo (($textos["Exercici"])); ?>
-					</a></li>
-				<?php
-				if (isset($_SESSION['user_info'])) {
-					echo "<li><a href='?proces/show'>Function</a></li>";
-				}
-				?>
-
 				<li><a href="?user/show">
 						<?php echo (($textos["Login"])); ?>
 					</a></li>
@@ -45,9 +33,11 @@
 					<li><a href="index.php?lang/set/en">English</a></li>
 				</div>
 				<?php
+				if ($_SESSION['user_info']) {
+					echo "<li><a href='?proces/show'>Proceso</a></li>";
+				}
 				if ($_SESSION["admin"] === 1) {
 					echo "<li><a href='?config/show'>Configuracion</a></li>";
-					echo "<li><a href='?proces/show'>Proceso</a></li>";
 				}
 				?>
 			</ul>

@@ -160,7 +160,7 @@ class PortadaController extends Controlador
 
     public function readHtml($obj)
     {
-        $html = "<button><a href='?portada/addShow'>ADD</a></button>";
+        $html = "<a href='?portada/addShow'><button>ADD</button></a>";
 
         foreach ($obj as $value) {
             $html .= "<table>";
@@ -180,7 +180,7 @@ class PortadaController extends Controlador
             }
 
             $html .= "<tr>";
-            $html .= "<td colspan='2' class='deletModi'><button type='button'><a href='?portada/showupdate&uid={$value["id"]}' method='GET'>Cambiar</a></button><button type='button'><a href='?portada/delete&uid={$value["id"]}' method='GET'>DELETE</a></button></td>";
+            $html .= "<td colspan='2' class='deletModi'><a href='?portada/showupdate&uid={$value["id"]}' method='GET'><button type='button'>Cambiar</button></a><a href='?portada/delete&uid={$value["id"]}' method='GET'><button type='button'>DELETE</button></a></td>";
             $html .= "</tr>";
 
             $html .= "</table>";

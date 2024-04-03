@@ -5,50 +5,33 @@ ini_set("display_errors", 1);
 
 class ProcesModel
 {
+    private $db;
 
     public function __construct()
     {
-    }
-
-    public function connect()
-    {
-        $dbhost = 'localhost';
-        $dbuser = 'joseph';
-        $dbpassword = 'joseph';
-        $database = 'qcep';
-        $conn = new mysqli($dbhost, $dbuser, $dbpassword, $database);
-        return $conn;
+        $this->db = ConnectDB::getInstance(); // 使用单例模式获取数据库连接
     }
 
     public function read($obj)
     {
         if ($obj->nom !== null) {
-            $query = "SELECT * FROM proces WHERE nom = ?";
-            $conn = $this->connect();
-            $statement = $conn->prepare($query);
-            $statement->bind_param('s', $obj->nom);
-            if ($statement->execute()) {
-                $results = $statement->get_result();
-                $data = [];
-                while ($row = $results->fetch_assoc()) {
-                    $data[] = new Proces($row["nom"], $row["tipus"], $row["objectiu"], $row["usuari_email"]);
-                }
-                $statement->close();
-                return $data;
-            }
+            $query = "SELECT * FROM proces WHERE nom = :nom";
+            $statement = $this->db->prepare($query);
+            $statement->bindParam(':nom', $obj->nom, PDO::PARAM_STR);
         } else {
             $query = "SELECT * FROM proces";
-            $conn = $this->connect();
-            $statement = $conn->prepare($query);
-            if ($statement->execute()) {
-                $results = $statement->get_result();
-                $data = [];
-                while ($row = $results->fetch_assoc()) {
-                    $data[] = new Proces($row["nom"], $row["tipus"], $row["objectiu"], $row["usuari_email"]);
-                }
-                $statement->close();
-                return $data;
+            $statement = $this->db->prepare($query);
+        }
+
+        $data = [];
+
+        if ($statement->execute()) {
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($results as $row) {
+                $data[] = new Proces($row["nom"], $row["tipus"], $row["objectiu"], $row["usuari_email"]);
             }
         }
+
+        return $data;
     }
 }

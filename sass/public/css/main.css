@@ -366,6 +366,24 @@ footer img {
   margin-left: 10px;
 }
 
+.insertModel {
+  list-style-type: none;
+  padding: 0;
+}
+.insertModel li {
+  margin-bottom: 10px;
+}
+.insertModel li a {
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  -webkit-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+}
+.insertModel li a:hover {
+  color: #007bff;
+}
+
 button {
   width: 10%;
   height: 30px;
@@ -400,6 +418,10 @@ button {
 .insertModel a {
   color: black;
   text-decoration: none;
+}
+
+button {
+  color: white;
 }
 
 button a {

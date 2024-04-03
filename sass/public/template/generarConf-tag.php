@@ -8,7 +8,6 @@
     <div class="Menu2 p40">
 
         <div class="bordermenu m30">
-            <h1>Configuracion<h1>
                     <div class="insertModel portada">
                         <?php
                         echo $html;

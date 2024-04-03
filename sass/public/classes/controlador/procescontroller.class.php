@@ -4,7 +4,7 @@ class ProcesController extends Controlador
     public function show()
     {
         $fitxerDeTraduct = $this->queIdioma();
-        if ($_SESSION["admin"] === 1) {
+        if ($_SESSION["user_info"]) {
             $procesVista = new ProcesVista();
             $procesModel = new ProcesModel();
             $proceData = $procesModel->read();
@@ -32,8 +32,12 @@ class ProcesController extends Controlador
 
     public function showHtml($obj)
     {
-        $html = "<a href='?proces/addshow'><button>Añadir</button></a>";
-        $html .= "<div id='sortable-list'class='cards'>";
+        if ($_SESSION["admin"] === 1) {
+            $html = "<a href='?proces/addshow'><button>Añadir</button></a>";
+            $html .= "<div id='sortable-list'class='cards'>";
+        } else {
+            $html = "<div id='sortable-list'class='cards'>";
+        }
         foreach ($obj as $value) {
             $html .= "<a href='?doc/documents&proces=" . $value->nom . "'><div data-id='{$value->nom}' class=\"card\">
                         <h2>{" . $value->nom . "}: " . $value->objectiu . "</h2>
