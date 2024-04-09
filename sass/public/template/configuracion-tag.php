@@ -1,23 +1,21 @@
-<div id="pagina" class="iniciar mantent">
-    <!--Section 2-->
-    <div class="Menu">
-        <h1>Configuracion</h1>
-    </div>
-    <!--Menu1-->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="mt-5">
+                <h1 class="text-center mb-4">Configuración</h1>
+                <ul class="list-group">
+                    <?php if ($_SESSION["admin"] === 1) : ?>
+                        <li class="list-group-item"><a href="?portada/show" class="text-decoration-none">Portada</a></li>
+                        <li class="list-group-item"><a href="?oraganizacio/show" class="text-decoration-none">Organización</a></li>
+                        <li class="list-group-item"><a href="?user/config" class="text-decoration-none">Configuración Usuario</a></li>
+                        <li class="list-group-item"><a href="#" class="text-decoration-none">Configuración Grupos</a></li>
+                    <?php endif; ?>
+                    <svg class="bi" width="16" height="16" fill="currentColor">
+                        <use xlink:href="#people-fill" />
+                    </svg>
 
-    <div class="Menu2 p40">
-
-        <div class="bordermenu m30">
-
-            <ul class="insertModel">
-                <?php
-                    if($_SESSION["admin"] === 1){
-                        echo "<li><a href='?portada/show'>Portada</a></li>";
-                        echo "<li><a href='?oraganizacio/show'>Organizacio</a></li>";
-                        echo "<li><a href='?user/config'>Configuracion Usuario</a></li>";
-                        echo "<li><a href=''>Configuracion Grupos</a></li>";
-                    }
-                ?>
-            <ul>
+                </ul>
+            </div>
         </div>
     </div>
+</div>

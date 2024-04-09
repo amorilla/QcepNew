@@ -127,49 +127,81 @@ class PortadaController extends Controlador
 
     public function addHtml()
     {
-        $html = "<form action='?portada/add' method='post' enctype='multipart/form-data'>";
+        $html = "<div class='container mt-5'>";
+        $html .= "<form action='?portada/add' method='post' enctype='multipart/form-data'>";
 
         if ($_SESSION["admin"] === 1) {
             $protadaModel = new PortadaModel();
             $maxId = $protadaModel->maxId() + 1;
 
-            $html .= "<label>El ID que añades es: {$maxId}</label><br>";
-            $html .= "<input type='hidden' id='id' name='id' value='{$maxId}'><br>";
+            $html .= "<div class='mb-3'>";
+            $html .= "<label class='form-label'>El ID que añades es: {$maxId}</label>";
+            $html .= "</div>";
+            $html .= "<input type='hidden' id='id' name='id' value='{$maxId}'>";
 
-            $html .= "<label>Pon el Nombre que quieres: </label><br>";
-            $html .= "<input id='nom' name='nom'><br>";
+            $html .= "<div class='mb-3'>";
+            $html .= "<label class='form-label'>Pon el Nombre que quieres:</label>";
+            $html .= "<input id='nom' name='nom' class='form-control'>";
+            $html .= "</div>";
 
-            $html .= "<label for='icono'>Sube el imagen que quieres:</label>";
-            $html .= "<input type='file' name='icono' id='icono' accept='.png, .jpg'><br>";
+            $html .= "<div class='mb-3'>";
+            $html .= "<label class='form-label' for='icono'>Sube el imagen que quieres:</label>";
+            $html .= "<input type='file' name='icono' id='icono' class='form-control' accept='.png, .jpg'>";
+            $html .= "</div>";
 
-            $html .= "<label>Pon el descripcion: </label><br>";
-            $html .= "<input id='descripcio' name='descripcio'><br>";
+            $html .= "<div class='mb-3'>";
+            $html .= "<label class='form-label'>Pon el descripcion:</label>";
+            $html .= "<input id='descripcio' name='descripcio' class='form-control'>";
+            $html .= "</div>";
 
-            $html .= "<label>Pon el enlace: </label><br>";
-            $html .= "<input id='enllac' name='enllac'><br>";
+            $html .= "<div class='mb-3'>";
+            $html .= "<label class='form-label'>Pon el enlace:</label>";
+            $html .= "<input id='enllac' name='enllac' class='form-control'>";
+            $html .= "</div>";
 
-            $html .= "<input type='submit' value='MODIFICAR'>";
-            $html = $html . " <a href='https://www.qceproba.com/?portada/show'>Volver</a>";
+            $html .= "<button type='submit' class='btn btn-primary'>MODIFICAR</button>";
+            $html .= "<a href='https://www.qceproba.com/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
         }
 
         $html .= "</form>";
+        $html .= "</div>";
 
         return $html;
     }
 
 
+
     public function readHtml($obj)
     {
-        $html = "<a href='?portada/addShow'><button>ADD</button></a>";
+        $html = "<div class='container mt-5'>";
+        $html .= "<a href='?portada/addShow' class='btn btn-primary mb-3'>ADD</a>";
+
+        // 添加一个模态框
+        $html .= "<div class='modal fade' id='confirmDeleteModal' tabindex='-1' aria-labelledby='confirmDeleteModalLabel' aria-hidden='true'>";
+        $html .= "<div class='modal-dialog'>";
+        $html .= "<div class='modal-content'>";
+        $html .= "<div class='modal-header'>";
+        $html .= "<h5 class='modal-title' id='confirmDeleteModalLabel'>Confirm Delete</h5>";
+        $html .= "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
+        $html .= "</div>";
+        $html .= "<div class='modal-body'>";
+        $html .= "Estas seguro que quieres eliminar este logo ?";
+        $html .= "</div>";
+        $html .= "<div class='modal-footer'>";
+        $html .= "<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancel</button>";
+        $html .= "<button type='button' class='btn btn-danger' id='confirmDeleteButton'>Delete</button>";
+        $html .= "</div>";
+        $html .= "</div>";
+        $html .= "</div>";
+        $html .= "</div>";
 
         foreach ($obj as $value) {
-            $html .= "<table>";
-
+            $html .= "<table class='table table-bordered'>";
             foreach ($value as $k => $var) {
                 if ($k == "icono") {
                     $html .= "<tr>";
                     $html .= "<th>{$k}</th>";
-                    $html .= "<td><img class='iconoImg' src='{$var}'/></td>";
+                    $html .= "<td><img width='32' height='32' src='{$var}'/></td>";
                     $html .= "</tr>";
                 } else if ($k !== "id") {
                     $html .= "<tr>";
@@ -180,39 +212,56 @@ class PortadaController extends Controlador
             }
 
             $html .= "<tr>";
-            $html .= "<td colspan='2' class='deletModi'><a href='?portada/showupdate&uid={$value["id"]}' method='GET'><button type='button'>Cambiar</button></a><a href='?portada/delete&uid={$value["id"]}' method='GET'><button type='button'>DELETE</button></a></td>";
+            $html .= "<td colspan='2'>";
+            $html .= "<a href='?portada/showupdate&uid={$value["id"]}' class='btn btn-secondary me-2'>Update</a>";
+            $html .= "<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal' data-id='{$value["id"]}'>DELETE</button>";
+            $html .= "</td>";
             $html .= "</tr>";
 
             $html .= "</table>";
         }
 
+        $html .= "</div>";
+
         return $html;
     }
 
+
+
+
+
     public function configShow($portada)
     {
-        $html = "
-        <form action='?portada/update' method='post' enctype='multipart/form-data'>
-    ";
+        $html = "<div class='container mt-5'>";
+        $html .= "<form action='?portada/update' method='post' enctype='multipart/form-data'>";
+
         if ($_SESSION["admin"] === 1) {
             foreach ($portada as $key => $value) {
                 if ($key == "icono") {
-                    $html .= "<label for='icono'>Sube el imagen que quieres:</label>";
-                    $html .= "<input type='file' name='icono' id='icono' accept='.png, .jpg' ><br>";
+                    $html .= "<div class='mb-3'>";
+                    $html .= "<label class='form-label' for='icono'>Sube el imagen que quieres:</label>";
+                    $html .= "<input type='file' name='icono' id='icono' class='form-control' accept='.png, .jpg'>";
+                    $html .= "</div>";
                 } else if ($key !== "id") {
-                    $html .= "<label>{$key}:</label></br>
-                        <input type='text' id='{$key}' name='{$key}' value='{$value}'><br>";
+                    $html .= "<div class='mb-3'>";
+                    $html .= "<label class='form-label'>{$key}:</label>";
+                    $html .= "<input type='text' id='{$key}' name='{$key}' value='{$value}' class='form-control'>";
+                    $html .= "</div>";
                 } else {
                     $html .= "<input type='hidden' name='id' value='{$value}'>";
-                    $html .= "<label>{$key}:{$value} <span class ='error'>El ID no se puede cambiar</span></label></br>";
+                    $html .= "<label class='form-label'>{$key}:{$value} <span class='text-muted'>El ID no se puede cambiar</span></label>";
                 }
             }
         }
-        $html = $html . " <input type='submit' value='MODIFICAR'>";
-        $html = $html . " <a href='https://www.qceproba.com/?portada/show'>Volver</a>";
-        $html = $html . "  </form>";
+
+        $html .= "<button type='submit' class='btn btn-primary'>MODIFICAR</button>";
+        $html .= "<a href='https://www.qceproba.com/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
+        $html .= "</form>";
+        $html .= "</div>";
+
         return $html;
     }
+
 
     public function saveUploadedFile($fileInputName, $uploadDirectory)
     {

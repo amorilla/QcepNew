@@ -219,7 +219,7 @@ class UserController extends Controlador
     {
         $html = "<button>Añadir nuevo usuario</button>";
         foreach ($obj as $key => $user) {
-            
+            $html .="<div>asdasd</div>";
             var_dump($user);
         }
         return $html;
