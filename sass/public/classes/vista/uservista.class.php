@@ -8,7 +8,7 @@ class UserVista extends Vista
         include "template/head-tag.php";
         echo "<body>";
         include "template/header-tag.php";
-        include "template/generarConf-tag.php";
+        include "template/userconfig-tag.php";
         include "template/footer-tag.php";
         echo "</body></html>";
     }

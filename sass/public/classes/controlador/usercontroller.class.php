@@ -217,9 +217,25 @@ class UserController extends Controlador
 
     public function configUser($obj)
     {
-        $html = "<button>Añadir nuevo usuario</button>";
+        $html = "";
         foreach ($obj as $key => $user) {
-            $html .="<div>asdasd</div>";
+            $admin = "No";
+            if ($user['es_administrador'] === 1) {
+                $admin = "Si";
+            }
+            $html .=
+                "<tr>
+                <td class='dtr-control'>
+                    <div class='form-check font-size-16'> <input class='form-check-input' type='checkbox' id='orderlistIdCheck-12'> <label class='form-check-label' for='orderlistIdCheck-12'></label> </div>
+                </td>
+                <td>
+                <div class='customerlist-name'>{$user['id']}</div>
+                <td>{$user['email']}</td>
+                <td>{$user['username']}</td>
+                <td>{$admin}</td>
+                <td>No hay</td>
+            </td>
+            </tr>";
             var_dump($user);
         }
         return $html;
