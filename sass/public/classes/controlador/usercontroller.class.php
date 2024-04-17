@@ -17,6 +17,24 @@ class UserController extends Controlador
         }
     }
 
+
+
+    public function config()
+    {
+        $fitxerDeTraduccions = $this->queIdioma();
+        if ($_SESSION['admin'] == 1) {
+            $userModel = new UsuariModel;
+            $userVista = new UserVista();
+            $users = $userModel->read();
+            $html = $this->configUser($users);
+            $userVista->show($fitxerDeTraduccions, $html);
+        } else {
+            $errorVista = new ErrorVista();
+            $texto = new Exception('No tienes el permiso de CONFIGURAR LOS USUARIOS');;
+            $errorVista->show($texto);
+        }
+    }
+
     // public function login()
     // {
     //     if (isset($_SESSION["user_info"]["email"])) {
@@ -57,12 +75,14 @@ class UserController extends Controlador
         $home->show();
     }
 
-    public function regist()
-    {
-        $fitxerDeTraduccions = $this->queIdioma();
-        $registrar = new LoginVista();
-        $registrar->registrar($fitxerDeTraduccions, null, null);
-    }
+    // public function regist()
+    // {
+    //     $fitxerDeTraduccions = $this->queIdioma();
+    //     $registrar = new LoginVista();
+    //     $registrar->registrar($fitxerDeTraduccions, null, null);
+    // }
+
+
 
     public function loginGoogle()
     {
@@ -86,8 +106,6 @@ class UserController extends Controlador
             $email = $google_info->email;
             $name = $google_info->name;
             $picture = $google_info->picture;
-
-
         } else {
             $loginUrl = $client->createAuthUrl();
             header('Location: ' . $loginUrl);
@@ -95,15 +113,15 @@ class UserController extends Controlador
         }
     }
 
-    public function proba()
-    {
-        $email = "2002duguxiu@gmail.com";
+    // public function proba()
+    // {
+    //     $email = "2002duguxiu@gmail.com";
 
 
-        $userModel = new UsuariModel();
-        $result = $userModel->read();
-        var_dump($result);
-    }
+    //     $userModel = new UsuariModel();
+    //     $result = $userModel->read();
+    //     var_dump($result);
+    // }
     public function userGoogle($params)
     {
         try {
@@ -152,7 +170,7 @@ class UserController extends Controlador
             for ($i = 0; $i < count($result); $i++) {
                 if ($result[$i]["email"] === $userInfo["email"]) {
                     $esta = true;
-                    $_SESSION['admin']=$result[$i]['es_administrador'];
+                    $_SESSION['admin'] = $result[$i]['es_administrador'];
                 }
             }
 
@@ -170,17 +188,13 @@ class UserController extends Controlador
                 // echo "<pre>";
                 // var_dump($userInfo);
                 // echo "</pre>";
-                ******************************************************/
+                 ******************************************************/
                 header("Location: https://www.qceproba.com/");
                 // return $userInfo;
             } else {
 
                 echo "<script>alert('No esta unido en la WEP, pide el administrador que añade tu usuario'); window.location.href = 'https://www.qceproba.com/';</script>";
             }
-
-
-
-
         } catch (Exception $e) {
             // Exception
             return ['error' => true, 'message' => $e->getMessage()];
@@ -200,6 +214,14 @@ class UserController extends Controlador
 
         return json_decode($userInfoResponse, true);
     }
+
+    public function configUser($obj)
+    {
+        $html = "<button>Añadir nuevo usuario</button>";
+        foreach ($obj as $key => $user) {
+            $html .="<div>asdasd</div>";
+            var_dump($user);
+        }
+        return $html;
+    }
 }
-
-

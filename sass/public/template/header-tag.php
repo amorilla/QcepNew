@@ -1,56 +1,52 @@
-<header class=" fixed w250 left border ">
+<header class="p-3 bg-dark text-white fixed-top">
+	<div class="container">
+		<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+			<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+				<svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+					<use xlink:href="#bootstrap"></use>
+				</svg>
+			</a>
 
-	<div class="black left height">
-		<div class="Logo">
-			<?php
-			if (isset($_SESSION['user_info'])) {
-				echo "<a href='?user/loginOut'><img src='{$_SESSION["user_info"]["picture"]}'></a></br>";
-				echo "<p style='color:white;'>{$_SESSION["user_info"]["name"]}</p>";
-			} else {
-				echo "<img src='./img/logo.png'>";
-			}
-			?>
-		</div>
-		<div class="Lista lcentra f20">
-			<ul>
-				<a href="./index.php">
-					<li>
-						<?php echo ($textos["Home"]); ?>
-					</li>
-				</a>
-				<li><a href="#">
-						<?php echo ($textos["Menu"]); ?>
-					</a></li>
-				<li><a href="#">
-						<?php echo (($textos["PHP"])); ?>
-					</a></li>
-				<li><a href="">
-						<?php echo (($textos["Exercici"])); ?>
-					</a></li>
+			<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+				<li><a href="/" class="nav-link px-2 text-secondary">Inicio</a></li>
+				<li><a href="#" class="nav-link px-2 text-white">Menu</a></li>
 				<?php
-				if (isset($_SESSION['user_info'])) {
-					echo "<li><a href='?proces/show'>Function</a></li>";
+				if ($_SESSION['user_info']) {
+					echo "<li><a class='nav-link px-2 text-white' href='?proces/show'>Proceso</a></li>";
 				}
-				?>
-
-				<li><a href="?user/show">
-						<?php echo (($textos["Login"])); ?>
-					</a></li>
-				<li id="botonIdioma"><span class="idioma">
-						<?php echo (($textos["Idioma"])); ?>
-					</span></li>
-				<div id="listaIdioma" class="noneLista">
-					<li><a href="index.php?lang/set/es">Español</a></li>
-					<li><a href="index.php?lang/set/cn">中文</a></li>
-					<li><a href="index.php?lang/set/en">English</a></li>
-				</div>
-				<?php
 				if ($_SESSION["admin"] === 1) {
-					echo "<li><a href='?config/show'>Configuracion</a></li>";
-					echo "<li><a href='?proces/show'>Proceso</a></li>";
+					echo "<li><a class='nav-link px-2 text-white' href='?config/show'>Configuracion</a></li>";
 				}
 				?>
 			</ul>
+
+
+			<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+				<input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+			</form>
+
+			<div class="dropdown text-end">
+				<a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+					<?php
+					if (isset($_SESSION['user_info'])) {
+						echo "<img alt='userLogo' width='32' height='32' class='rounded-circle' src='{$_SESSION["user_info"]["picture"]}'>";
+						//<a href='?user/loginOut'></a>
+					}else {
+						echo "<a href='?user/show'>Iniciar</a>";
+					}
+					?>
+				</a>
+				<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+					<li><a class="dropdown-item" href="#">New project...</a></li>
+					<li><a class="dropdown-item" href="#">Settings</a></li>
+					<li><a class="dropdown-item" href="#">Profile</a></li>
+					<li>
+						<hr class="dropdown-divider">
+					</li>
+					<li><a class="dropdown-item" href="?user/loginOut">Sign out</a></li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </header>
+<main>

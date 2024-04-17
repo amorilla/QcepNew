@@ -1,21 +1,13 @@
-<div id="pagina" class="iniciar mantent">
-    <!--Section 2-->
-    <div class="Menu">
-        <h3>Configuracion</h3>
-    </div>
-    <!--Menu1-->
-
-    <div class="Menu2 p40">
-
-        <div class="bordermenu m30">
-            <h3>Configuracion</h3>
-
-            <ul class="insertModel portada">
-                <?php
-                echo $html;
-                echo "<span class='error'>{$error}</span>";
-                echo "<span class='oktext'>{$ok}</span>";
-                ?>
-                <ul>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="mt-5">
+            <h1 class="text-center mb-4">Configuración</h1>
+            <?php
+            echo $html;
+            echo "<span class='error'>{$error}</span>";
+            echo "<span class='oktext'>{$ok}</span>";
+            ?>
+            <ul>
         </div>
     </div>
+</div>
