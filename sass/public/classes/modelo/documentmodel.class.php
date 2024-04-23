@@ -1,60 +1,99 @@
 <?php
 
-// error_reporting(E_ALL);
-// ini_set("display_errors", 1);
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 
 class DocumentModel
 {
 
+    private $pdo;
+
     public function __construct()
     {
+        $this->pdo = DbConnection::getInstance();
     }
 
-    public function connect()
+    public function getTable()
     {
-        $dbhost = 'localhost';
-        $dbuser = 'usr_generic';
-        $dbpassword = '2024@Thos';
-        $database = 'qcep';
-        $conn = new mysqli($dbhost, $dbuser, $dbpassword, $database);
-        return $conn;
-    }
+        $query = "SELECT * FROM document";
+        $statement = $this->pdo->prepare($query);
 
-    public function create($obj)
-    {
-    }
-
-    public function read($obj)
-    {
-        if ($obj->proces_nom !== null) {
-            $query = "SELECT nom,link FROM document WHERE proces_nom = ?";
-            $conn = $this->connect();
-            $statement = $conn->prepare($query);
-            $statement->bind_param('s', $obj->proces_nom);
-            if ($statement->execute()) {
-                $results = $statement->get_result();
-                $data = [];
-                while ($row = $results->fetch_assoc()) {
-                    $data[] = new Document($row["nom"], $row["tipus"], $row["link"], $row["proces_nom"]);
-                }
-                $statement->close();
-                return $data;
+        if ($statement->execute()) {
+            $results = [];
+            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $results[] = new Document(
+                    $row['id'],
+                    $row["nom"],
+                    $row["tipus"],
+                    $row["link"],
+                    $row["proces_nom"]
+                );
             }
-        } else {
-            $query = "SELECT nom,link FROM document WHERE proces_nom = ?";
-            $conn = $this->connect();
-            $statement = $conn->prepare($query);
-            $statement->bind_param('s', $obj->proces_nom);
-            if ($statement->execute()) {
-                $results = $statement->get_result();
-                $data = [];
-                while ($row = $results->fetch_assoc()) {
-                    $data[] = new Document($row["nom"], $row["tipus"], $row["link"], $row["proces_nom"]);
-                }
-                $statement->close();
-                return $data;
+            $statement->closeCursor();
+            return $results;
+        }
+    }
+
+    public function getDocumentByProcesNom(Document $obj){
+        $query = "SELECT * FROM document WHERE proces_id = :proces_id";
+        $statement = $this->pdo->prepare($query);
+
+        $id = $obj->__get('proces_id');
+        $statement->bindParam(':proces_id', $id, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $results = [];
+            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $results[] = new Document(
+                    $row['id'],
+                    $row["nom"],
+                    $row["tipus"],
+                    $row["link"],
+                    $row["proces_id"]
+                );
+            }
+            $statement->closeCursor();
+            return $results;
+        }
+    }
+
+    public function read(Document $obj)
+    {
+        
+        $query = "SELECT * FROM document WHERE id = :id";
+        $statement = $this->pdo->prepare($query);
+
+        $id = $obj->__get('id');
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            $results = [];
+            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $results[] = new Document(
+                    $row['id'],
+                    $row["nom"],
+                    $row["tipus"],
+                    $row["link"],
+                    $row["proces_id"]
+                );
+            }
+            $statement->closeCursor();
+            return $results;
+        }
+    }
+
+    public function create(Document $obj)
+    {
+        if (count($this->read($obj)) === 0) {
+            $query = "INSERT INTO document (nom, tipus, link, proces_id) VALUES (?, ?, ?, ?)";
+            $statement = $this->pdo->prepare($query);
+            $state = $statement->execute([$obj->__get('nom'), $obj->__get('tipus'), $obj->__get('link'), $obj->__get('proces_id')]);
+            if ($state) {
+                $statement->closeCursor();
+                return true;
             }
         }
+        return false;
     }
 
     public function update(Document $obj)

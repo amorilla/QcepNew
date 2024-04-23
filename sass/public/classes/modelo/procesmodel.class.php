@@ -1,79 +1,111 @@
 <?php
-include './classes/config/UsuarioDB.php';
 
-class ProcesModel implements CRUDable
+class ProcesModel
 {
+
     private $pdo;
 
     public function __construct()
     {
-        $dsn = "mysql:host=" . HOST . ";dbname=" . DB;
-        $this->pdo = new PDO($dsn, ROOT, PASSRINSERT);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo = DbConnection::getInstance();
     }
 
-    public function read($obj = null)
+    public function getTable()
     {
-        try {
-            $stmt = $this->pdo->query("SELECT * FROM proces");
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $result = [];
-            foreach ($rows as $row) {
-                $proces = new Proces($row['nom'], $row['tipus'], $row['objectiu'], $row['usuari_email']);
-                $result[] = $proces;
+        $query = "SELECT * FROM proces";
+        $statement =  $this->pdo->prepare($query);
+
+        if ($statement->execute()) {
+            $results = [];
+            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $results[] = new Proces(
+                    $row["id"],
+                    $row["nom"],
+                    $row["tipus"],
+                    $row["objectiu"],
+                    $row["usuari_id"]
+                );
             }
-            return $result;
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return [];
+            $statement->closeCursor();
+            return $results;
         }
     }
 
-    public function create($obj = null)
+    public function read(Proces $obj)
     {
-        try {
-            $stmt = $this->pdo->prepare("INSERT INTO Organitzacio (id, nom, icono, descripcio, enllac) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$obj->id, $obj->nom, $obj->icono, $obj->descripcio, $obj->enllac]);
-            return true;
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return false;
+        $nom = $obj->__get('nom');
+        $query = "SELECT * FROM proces WHERE nom = :nom";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindParam(':nom', $nom, PDO::PARAM_STR);
+
+        if ($statement->execute()) {
+            $proces = [];
+            while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                $proces = new Proces(
+                    $row["id"],
+                    $row["nom"],
+                    $row["tipus"],
+                    $row["objectiu"],
+                    $row["usuari_id"]
+                );
+            }
+            $statement->closeCursor();
+            return $proces;
         }
     }
 
-    public function update($obj)
+    public function create(Proces $obj)
     {
-        try {
-            $stmt = $this->pdo->prepare("UPDATE Organitzacio SET Nom=?, email=?, web=?, logo=? WHERE id = ?");
-            $stmt->execute([$obj->nom, $obj->email, $obj->web, $obj->logo, $obj->id]);
-            return true;
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return false;
+        if (count($this->read($obj)) === 0) {
+            $query = "INSERT INTO proces (nom, tipus, objectiu, usuari_id) VALUES (?, ?, ?, ?)";
+            $statement = $this->pdo->prepare($query);
+            $state = $statement->execute([$obj->__get('nom'), $obj->__get('tipus'), $obj->__get('objectiu'), $obj->__get('usuari_id')]);
+            if ($state) {
+                $statement->closeCursor();
+                return true;
+            }
         }
+        return false;
     }
 
-    public function delete($obj)
+    public function update(Proces $obj)
     {
-        try {
-            $stmt = $this->pdo->prepare("DELETE FROM portada WHERE id = ?");
-            $stmt->execute([$obj]);
-            return true;
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return false;
+        if (count($this->read($obj)) !== 0) {
+            $query = "UPDATE apartat SET nom = :nom, tipus = :tipus, objectiu = :objectiu, usuari_id = :usuari_id WHERE id = :id";
+            $statement = $this->pdo->prepare($query);
+
+            $nom = $obj->__get('nom');
+            $tipus = $obj->__get('tipus');
+            $objectiu = $obj->__get('objectiu');
+            $usuari_id = $obj->__get('usuari_id');
+            $id = $obj->__get('id');
+
+            $statement->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $statement->bindParam(':tipus', $tipus, PDO::PARAM_STR);
+            $statement->bindParam(':objectiu', $objectiu, PDO::PARAM_STR);
+            $statement->bindParam(':usuari_id', $usuari_id, PDO::PARAM_STR);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+            $state = $statement->execute();
+            if ($state) {
+                $statement->closeCursor();
+                return true;
+            }
         }
+        return false;
     }
 
-    public function maxId()
+    public function delete(Proces $obj)
     {
-        try {
-            $stmt = $this->pdo->query("SELECT MAX(id) AS max_id FROM portada");
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $row['max_id'];
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-            return null;
+        if (count($this->read($obj)) !== 0) {
+            $query = "DELETE FROM apartat WHERE id = ?";
+            $statement = $this->pdo->prepare($query);
+            $state = $statement->execute([$obj->__get('id')]);
+            if ($state) {
+                $statement->closeCursor();
+                return true;
+            }
         }
+        return false;
     }
 }

@@ -1,8 +1,6 @@
 <?php
 class EmpresaDatos{
 
-
-
     public static function sessionDatos(){
         $oragaModel = new OraganizacioModel();
         $orgaInfo = $oragaModel->read();
@@ -10,4 +8,3 @@ class EmpresaDatos{
     }
 }
 
-?>

@@ -1,6 +1,11 @@
 <?php
 class AvalucaioModel implements CRUDable
 {
+    private $pdo;
+
+    public function __construct(){
+        $this->pdo = DbConnection::getInstance();
+    }
     
     public function read($obj = null)
     {

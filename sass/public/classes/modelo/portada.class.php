@@ -16,4 +16,3 @@ class Portada
         $this->enllac = $enllac;
     }
 }
-?>
