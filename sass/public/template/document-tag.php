@@ -1,6 +1,4 @@
-<main class="proces">
-    <!-- <?php
-    // echo $main; //is in classes/controller/doccontroller/generateMain ?> -->
+<main>
 
     <div class="container-fluid">
 
@@ -74,10 +72,6 @@
                         <!-- table -->
                         <?php
 
-                        if (isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
-                            echo "<p class='new'><a href='#'>+ NEW</a></p>";
-                        }
-
                         if (isset($documents) && count($documents) !== 0) {
                             echo '<table class="table">
                                 <thead>
@@ -92,28 +86,30 @@
                             echo '</tr></head><tbody>';
 
                             if (isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
-                                $html .= "<tr>";
-                                $html .= "<form action='?document/create' method='post'>";
-                                $html .= "<td>";
-                                $html .= "<input type='text' name='nom' placeholder='New Document'>";
-                                $html .= "</td>";
-                                $html .= "<td>";
-                                $html .= "<input type='text' name='link' placeholder='Document link'>";
-                                $html .= "</td>";
-                                $html .= "<td colspan='2'>";
-                                $html .= "<button class='btnAdd' type='submit'>Add</button>";
-                                $html .= "</td>";
-                                $html .= "</form>";
-                                $html .= "</tr>";
+                                echo "<tr>";
+                                echo "<form action='?document/create' method='post'>";
+                                echo "<td>";
+                                echo "<input  class='form-control input-sm' type='text' name='nom' placeholder='New Document'>";
+                                echo "</td>";
+                                echo "<td>";
+                                echo "<input  class='form-control input-sm' type='text' name='link' placeholder='Document link'>";
+                                echo "</td>";
+                                echo "<td>";
+                                echo '<div class="d-flex justify-content-center">
+                                <button type="button" class="btn btn-success">Add</button>
+                                </div>';
+                                echo "</td>";
+                                echo "</form>";
+                                echo "</tr>";
                             }
 
                             foreach ($documents as $document){
-                                echo '<tr><td class="text-body">'.$document->__get('nom').'</td>';
-                                $html .= '<td><a href="#">' . $document->__get('link') . '</a></td>';
+                                echo '<tr><td class="text-body ms-2">'.$document->__get('nom').'</td>';
+                                echo '<td><a class="ms-2" href="#">' . $document->__get('link') . '</a></td>';
 
                                 if (isset($_SESSION['admin']) && $_SESSION['admin'] === true){
                                     echo '<td>
-                                    <div class="d-flex gap-1">
+                                    <div class="d-flex justify-content-center gap-1">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                             class="text-success">
                                             <i class="bi bi-pencil font-size-18"></i>
@@ -158,7 +154,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <h5 class="font-size-14 m-0">
+                                            <h5 class="font-size-10 m-0">
                                                 <?php echo $autor->getUsername(); ?>
                                             </h5>
                                         </td>
@@ -166,7 +162,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5 class="font-size-14 m-0">
+                                            <h5 class="font-size-10 m-0">
                                                 <?php echo $autor->getEmail(); ?>
                                             </h5>
                                         </td>
@@ -174,7 +170,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <h5 class="font-size-14 m-0">
+                                            <h5 class="font-size-10 m-0">
                                                 <?php echo "data"; ?>
                                             </h5>
                                         </td>
