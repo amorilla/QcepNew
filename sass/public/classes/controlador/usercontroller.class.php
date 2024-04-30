@@ -35,36 +35,6 @@ class UserController extends Controlador
         }
     }
 
-    // public function login()
-    // {
-    //     if (isset($_SESSION["user_info"]["email"])) {
-    //         $userModel = new UsuariModel();
-    //         $result = $userModel->read();
-    //         var_dump($result);
-    //         $esta = false;
-
-    //         if ($esta === true) {
-    //             $email = $this->sanitize($_SESSION["user_info"]["email"]);
-    //             $name = $this->sanitize($_SESSION["user_info"]["name"]);
-    //             $usuari = new Usuari($email, $name, NULL);
-    //             $conectar = new UsuariModel();
-    //             $status = $conectar->read($usuari);
-    //             if ($status != false) {
-    //                 $home = new HomeController();
-    //                 $home->show();
-    //             } else {
-    //                 echo "No existe tu usuario";
-    //             }
-
-    //         }else{
-    //             echo"Sorry";
-    //         }
-    //     }
-
-    // }
-
-
-
 
     public function loginOut()
     {
@@ -170,7 +140,7 @@ class UserController extends Controlador
             for ($i = 0; $i < count($result); $i++) {
                 if ($result[$i]["email"] === $userInfo["email"]) {
                     $esta = true;
-                    $_SESSION['admin'] = $result[$i]['es_administrador'];
+                    $_SESSION['admin'] = (int)$result[$i]['es_administrador'];
                 }
             }
 
@@ -215,13 +185,69 @@ class UserController extends Controlador
         return json_decode($userInfoResponse, true);
     }
 
+    public function addUser()
+    {
+        // 检查请求方法是否为 POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // 获取请求体中的原始数据
+            $input_data = file_get_contents('php://input');
+
+            // 解析 JSON 数据
+            $data = json_decode($input_data, true);
+
+            // 检查是否成功解析 JSON 数据
+            if ($data === null) {
+                // 如果解析失败，返回错误信息
+                echo json_encode(['success' => false, 'error' => 'Invalid JSON data']);
+                return;
+            }
+
+            // 提取用户名、邮箱和管理员信息
+            $username = $data['username'];
+            $email = $data['email'];
+            $isAdmin = $data['isAdmin'];
+
+            // 创建用户对象
+            $newUser = new Usuari($email, $username, $isAdmin);
+
+            // 执行添加用户操作
+            $result = $this->create($newUser);
+
+            // 返回响应
+            if ($result) {
+                echo json_encode(['success' => true]);
+            } elseif ($result === "exist") {
+                echo json_encode(['success' => false, 'error' => 'User already exists']);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Failed to add new user']);
+            }
+        } else {
+            // 如果不是 POST 请求，返回错误信息
+            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+        }
+    }
+
+
+    // La function para guardar un nuevo usuario en la base de datos.
+    private function create($user)
+    {
+        $userModel = new UsuariModel;
+        $creado = $userModel->create($user);
+        if ($creado) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     public function configUser($obj)
     {
         $html = "";
         foreach ($obj as $key => $user) {
-            $admin = "No";
-            if ($user['es_administrador'] === 1) {
-                $admin = "Si";
+            $admin = "<span style='color:red;font-size:30px'>&#10539;</span>";
+            if ($user['es_administrador'] === "1") {
+                $admin = "<span style='color:green;font-size:30px'>&#10003;</span>";
             }
             $html .=
                 "<tr>
@@ -236,7 +262,6 @@ class UserController extends Controlador
                 <td>No hay</td>
             </td>
             </tr>";
-            var_dump($user);
         }
         return $html;
     }

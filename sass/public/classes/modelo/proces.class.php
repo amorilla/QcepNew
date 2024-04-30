@@ -4,14 +4,14 @@ class Proces
     private $nom;
     private $tipus;
     private $objectiu;
-    private $usuari_email;
+    private $usuari_id;
 
-    public function __construct($nom, $tipus, $objectiu, $usuari_email)
+    public function __construct($nom, $tipus, $objectiu, $usuari_id)
     {
         $this->nom = $nom;
         $this->tipus = $tipus;
         $this->objectiu = $objectiu;
-        $this->usuari_email = $usuari_email;
+        $this->usuari_id = $usuari_id;
     }
 
     public function __get($name)

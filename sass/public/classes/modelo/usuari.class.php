@@ -1,37 +1,86 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
-class ProcesModel
+class Usuari
 {
-    private $db;
+    private $id;
+    private $email;
+    private $username;
+    private $admin;
+    private $grupo;
 
-    public function __construct()
+
+
+
+    function __construct($email, $username, $admin, $grupo = [])
     {
-        $this->db = ConnectDB::getInstance(); // 使用单例模式获取数据库连接
+        $this->email = $email;
+        $this->username = $username;
+        $this->admin = (int)$admin;
+        $this->grupo = $grupo;
     }
 
-    public function read($obj)
+    public function getId()
     {
-        if ($obj->nom !== null) {
-            $query = "SELECT * FROM proces WHERE nom = :nom";
-            $statement = $this->db->prepare($query);
-            $statement->bindParam(':nom', $obj->nom, PDO::PARAM_STR);
-        } else {
-            $query = "SELECT * FROM proces";
-            $statement = $this->db->prepare($query);
-        }
+        return $this->id;
+    }
 
-        $data = [];
+    /**
+     * @param $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
-        if ($statement->execute()) {
-            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($results as $row) {
-                $data[] = new Proces($row["nom"], $row["tipus"], $row["objectiu"], $row["usuari_email"]);
-            }
-        }
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-        return $data;
+    /**
+     * @param $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    public function getAdmin()
+    {
+        return $this->admin;
+    }
+
+    /**
+     * @param $admin
+     */
+    public function setAdmin($admin)
+    {
+        $this->admin = $admin;
+    }
+
+    public function getGrupo()
+    {
+        return $this->grupo;
+    }
+
+    /**
+     * @param $grupo
+     */
+    public function setGrupo($grupo)
+    {
+        $this->grupo = $grupo;
     }
 }
