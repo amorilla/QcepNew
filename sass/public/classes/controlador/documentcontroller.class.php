@@ -5,23 +5,21 @@
 
 class DocumentController
 {
-    public function documents()
+    public function show()
     {
-        $data = [];
-        $resultProces = [];
-        $apartats = [];
-        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["proces"])) {
-            $proces_nom = $_GET["proces"];
-            $document = new Document(null, null, null, $proces_nom);
+        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["process"])) {
+            $proces_id = $_GET["process"];
+            $document = new Document($proces_id, null, null, null, null);
             $documentModel = new DocumentModel();
             $result = $documentModel->read($document);
             if (count($result) !== 0) {
                 $data = $result;
             }
 
-            $proces = new Proces($proces_nom, null, null, null);
+            $proces = new Proces($proces_id, null, null, null, null);
             $procesM = new ProcesModel();
             $resultProces = $procesM->read($proces);
+            var_dump($resultProces);
         }
     }
 

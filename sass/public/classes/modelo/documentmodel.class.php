@@ -26,30 +26,30 @@ class DocumentModel
 
     public function read($obj)
     {
-        if ($obj->proces_nom !== null) {
-            $query = "SELECT nom,link FROM document WHERE proces_nom = ?";
+        if ($obj->proces_id !== null) {
+            $query = "SELECT * FROM document WHERE id = ?";
             $conn = $this->connect();
             $statement = $conn->prepare($query);
-            $statement->bind_param('s', $obj->proces_nom);
+            $statement->bind_param('s', $obj->proces_id);
             if ($statement->execute()) {
                 $results = $statement->get_result();
                 $data = [];
                 while ($row = $results->fetch_assoc()) {
-                    $data[] = new Document($row["nom"], $row["tipus"], $row["link"], $row["proces_nom"]);
+                    $data[] = new Document($row['id'], $row["nom"], $row["tipus"], $row["link"], $row["proces_id"]);
                 }
                 $statement->close();
                 return $data;
             }
         } else {
-            $query = "SELECT nom,link FROM document WHERE proces_nom = ?";
+            $query = "SELECT nom,link FROM document WHERE proces_id = ?";
             $conn = $this->connect();
             $statement = $conn->prepare($query);
-            $statement->bind_param('s', $obj->proces_nom);
+            $statement->bind_param('s', $obj->proces_id);
             if ($statement->execute()) {
                 $results = $statement->get_result();
                 $data = [];
                 while ($row = $results->fetch_assoc()) {
-                    $data[] = new Document($row["nom"], $row["tipus"], $row["link"], $row["proces_nom"]);
+                    $data[] = new Document($row['id'], $row["nom"], $row["tipus"], $row["link"], $row["proces_id"]);
                 }
                 $statement->close();
                 return $data;

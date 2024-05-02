@@ -19,7 +19,7 @@ class ProcesModel implements CRUDable
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $result = [];
             foreach ($rows as $row) {
-                $proces = new Proces($row['nom'], $row['tipus'], $row['objectiu'], $row['usuari_id']);
+                $proces = new Proces($row['id'],$row['nom'], $row['tipus'], $row['objectiu'], $row['usuari_id']);
                 $result[] = $proces;
             }
             return $result;

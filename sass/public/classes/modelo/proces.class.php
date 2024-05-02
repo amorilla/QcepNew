@@ -1,13 +1,15 @@
 <?php
 class Proces
 {
+    private $id;
     private $nom;
     private $tipus;
     private $objectiu;
     private $usuari_id;
 
-    public function __construct($nom, $tipus, $objectiu, $usuari_id)
+    public function __construct($id, $nom, $tipus, $objectiu, $usuari_id)
     {
+        $this->id = $id;
         $this->nom = $nom;
         $this->tipus = $tipus;
         $this->objectiu = $objectiu;

@@ -38,7 +38,7 @@ class ProcesController extends Controlador
         $html = "<div id='sortable-list' class='row'>";
         foreach ($obj as $value) {
             $html .= "<div class='col-md-4 mb-3'>
-                    <a href='?doc/documents&proces={$value->nom}' class='text-decoration-none'>
+                    <a href='?document/show&process={$value->id}' class='text-decoration-none'>
                         <div data-id='{$value->nom}' class='card'>
                             <div class='card-body'>
                                 <h5 class='card-title'>{$value->nom}</h5>
