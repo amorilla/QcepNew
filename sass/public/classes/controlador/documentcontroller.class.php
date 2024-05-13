@@ -1,9 +1,5 @@
 <?php
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 class DocumentController extends Controlador
 {
 
@@ -15,37 +11,129 @@ class DocumentController extends Controlador
     public function documents()
     {
 
-        $procesos = [];
+        $proces = [];
         $documents = [];
+        $error = [];
+        $clients = [];
+        $saved = [];
 
-        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["proces"])) {
+        if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["proces"])) {
 
-            $proces_id = $_GET["proces"];
-
-            $proces = new Proces(null, $proces_id, null, null, null);
+            $proces_id = $this->sanitize($_GET["proces"]);
             $procesModel = new ProcesModel();
-            $proces = $procesModel->read($proces);
+            $proces = $procesModel->getProcesByID($proces_id);
 
-            if (count($proces) > 0) {
-                $pid = $proces->__get('id');
-                $document = new Document(null, null, null, null, $pid);
-                $documentModel = new DocumentModel();
-                $documents = $documentModel->getDocumentByProcesNom($document);
+            $document = new Document(null, null, null, null, $proces_id);
+            $documentModel = new DocumentModel();
+            $documents = $documentModel->getDocumentByProcesNom($document);
+
+            $clientModel = new ClientModel();
+            $clients = $clientModel->getClientsByID($proces_id);
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            if(isset($_POST['create'])){
+                $error = $this->create(); // Process creation
+            }
+
+            if(isset($_POST['edit'])){
+                $saved = $this->edit(); // Process editing
+            }
+
+            if(isset($_POST['delete'])){
+                $this->delete();
             }
         }
 
-        DocumentVista::show($proces, $documents);
+        DocumentView::show($proces, $documents, $error, $saved, $clients);
     }
 
     public function create()
     {
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
-            // $nom = $this->sanitize($_POST["nom"]);
-            // $link = $this->sanitize($_POST["link"]);
+        $error = [];
+        $saved = new Document(null, null, null, null, null);
 
+        $proces_id = (int) $this->sanitize($_POST["proces_id"]);
+        $saved->__set("proces_id", $proces_id);
 
+        $nom = $this->sanitize($_POST["nom"]);
+        if (strlen($nom) == 0) {
+            $error["nom"] = "fill the section";
+            unset($descripcio);
+        } else {
+            $saved->__set("nom", $nom);
         }
+
+        $link = $this->sanitize($_POST["link"]);
+        if (strlen($link) == 0) {
+            $error["link"] = "fill the section";
+            unset($link);
+        } else {
+            $saved->__set("link", $link);
+        }
+
+        $tipus = "document";
+        $saved->__set("tipus", $tipus);
+
+
+        if (empty($error)) {
+            $documentModel = new DocumentModel();
+            $state = $documentModel->create($saved);
+            if ($state) {
+                header("Location: ?document/documents&proces=$proces_id");
+            }
+        }
+
+        return $error;
+    }
+
+    public function edit(){
+        $saved = new Document(null,null,null,null,null);
+
+        $id = (int) $this->sanitize($_POST['doc_id']);
+        $saved->__set("id", $id);
+
+        $proces_id = (int) $this->sanitize($_POST['proces_id']);
+        $saved->__set("proces_id", $proces_id);
+
+        $nom = $this->sanitize($_POST["doc_nom"]);
+        if (strlen($nom) == 0) {
+            $error["doc_nom"] = "fill the section";
+            unset($nom);
+        }else{
+            $saved->__set("nom", $nom);
+        }
+
+        $link = $this->sanitize($_POST["doc_link"]);
+        if (strlen($link) == 0) {
+            $error["doc_link"] = "fill the section";
+            unset($link);
+        }else{
+            $saved->__set("link", $link);
+        }
+
+        $tipus = "document";
+        $saved->__set("tipus", $tipus);
+
+       if(empty($error)){
+        $documentModel = new DocumentModel();
+        $state = $documentModel->update($saved);
+        if($state){
+            header("Location: ?document/documents&proces=$proces_id");
+        }
+       }
+       return $saved;
+    }
+
+    public function delete(){
+        $proces_id = (int) $this->sanitize($_POST["proces_id"]);
+        $id = (int) $this->sanitize($_POST['doc_id']);
+        $documentModel = new DocumentModel();
+        $state = $documentModel->deleteByID($id);
+        if ($state) {
+            header("Location: ?document/documents&proces=$proces_id");
+        } 
     }
 
 }

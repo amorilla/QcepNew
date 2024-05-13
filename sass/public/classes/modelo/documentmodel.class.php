@@ -136,4 +136,18 @@ class DocumentModel
         }
         return false;
     }
+
+    public function deleteByID($id)
+    {
+        if($id !== 0) {
+            $query = "DELETE FROM document WHERE id = ?";
+            $statement = $this->pdo->prepare($query);
+            $state = $statement->execute([$id]);
+            if ($state) {
+                $statement->closeCursor();
+                return true;
+            }
+        }
+        return false;
+    }
 }

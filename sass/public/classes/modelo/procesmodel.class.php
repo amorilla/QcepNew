@@ -108,4 +108,30 @@ class ProcesModel
         }
         return false;
     }
+
+    public function getProcesByID($id)
+    {
+        if ($id !== null) {
+
+            $proces = [];
+            $query = "SELECT * FROM proces WHERE id = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+            if ($statement->execute()) {
+                while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+                    $proces = new Proces(
+                        $row["id"],
+                        $row["nom"],
+                        $row["tipus"],
+                        $row["objectiu"],
+                        $row["usuari_id"]
+                    );
+                }
+                $statement->closeCursor();
+                return $proces;
+            }
+
+        }
+    }
 }
