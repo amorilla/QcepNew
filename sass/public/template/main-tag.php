@@ -1,6 +1,6 @@
 	<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
 		<div class="col-md-5 p-lg-5 mx-auto my-5">
-			<h1 class="display-4 fw-normal">Punny headline</h1>
+			<h1 class="display-4 fw-normal"><?= $oDatos[0]['nom'] ?></h1>
 			<p class="lead fw-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple’s marketing pages.</p>
 			<a class="btn btn-outline-secondary" href="#">Coming soon</a>
 		</div>
@@ -9,6 +9,54 @@
 	</div>
 
 	<div class="row">
+
+		<?php
+		$htmlOutput = '';
+
+		// 反向排序文档数据数组
+		$docDatos = array_reverse($docDatos);
+
+		foreach ($docDatos as $doc) {
+			$title = htmlspecialchars($doc->getTitle());
+			$createdAt = htmlspecialchars($doc->getCreated_at());
+			$dId = htmlspecialchars($doc->getId());
+			$hasImage = false; // 默认没有图片
+
+			// 检查文档的图片
+			foreach ($sDatos as $section) {
+				if ($section->getType() == 'image' && $section->getDocument_id() == $dId && $section->getImage_url() != null) {
+					// 如果文档包含图片，将其设置为封面，并标记为true
+					$coverImage = $section->getImage_url();
+					$hasImage = true;
+					break;
+				}
+			}
+
+			// 根据是否有图片设置封面样式
+			$coverStyle = $hasImage ? "background-image: url('$coverImage');" : '';
+
+			// 生成 HTML 输出
+			$htmlOutput .= <<<HTML
+    <div class="col-md-6 mb-3">
+        <a href="?documenttext/show&id={$dId}" class="text-decoration-none">
+            <div class="bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+                <div class="my-3 py-3">
+                    <h2 class="display-5">$title</h2>
+                    <p class="lead">Created at: $createdAt</p>
+                </div>
+                <div class="bg-light shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;$coverStyle"></div>
+            </div>
+        </a>
+    </div>
+HTML;
+		}
+
+		echo $htmlOutput;
+		?>
+
+
+
+
 		<div class="col-md-6 mb-3">
 			<div class="bg-dark me-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
 				<div class="my-3 py-3">
@@ -64,63 +112,3 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
-
-
-	<!-- 
-<main>
-	<div id="pagina">
-		<section>
-			<div class="fondo1 ">
-				<div class="finestra ">
-					<h1 class="fblanc letra40 tcentra lh15 ">Bienvenido a </h1>
-				</div>
-
-			</div>
-		</section>
-
-
-		<div class="Menu">
-
-		</div>
-
-		<div class="Menu2 p40">
-
-			<div class="bordermenu m30 ">
-				<a href="?inversis/show"><img class="img" src="img/art01.png" alt=""></a>
-				<h3>INVERSIONES</h3>
-				<p>Lorem ipsum dolor sit amet lacus. Vivamus ut vehicula neque
-					placerat nisl in nulla dolor tellus, condimentum nec, pede. Cras
-					adipiscing elit. Quisque orci. In lobortis mauris nec magna.</p>
-			</div>
-			<div class="bordermenu m30">
-				<a href="./Guest_Book.php"><img class="img" src="img/art02.png" alt=""></a>
-				<h3>Guest Book</h3>
-				<p>Pellentesque euismod nibh, ut magna diam, suscipit dui vel lorem
-					non augue. Praesent vitae mauris. Ut blandit, est tincidunt sit
-					amet mauris. Praesent elit viverra est pede. Vivamus Commodo</p>
-			</div>
-			<div class="bordermenu m30">
-				<a href="./comprobarContra.php"><img class="img" src="img/art03.jpg" alt=""></a>
-				<h3>CODIFICAR CONTRASEÑA</h3>
-				<p>En esta pagina puede comprobar tu contraseña si es STRONG o
-					NOOOO!!!!!</p>
-			</div>
-			<div class="bordermenu m30">
-				<img class="img" src="img/art04.jpg" alt="">
-				<h3>NULLA TRISTIQUE EROS</h3>
-				<p>Donec laoreet consectetur luctus. Aenean vestibulum tincidunt
-					facilisis. Mauris odio arcu, pellentesque ac fringilla nec, laoreet
-					sed dui. Suspendisse potenti. Phasellus non libero eget felis
-					lobortis gravida eu sit amet nunc.</p>
-			</div> -->
-	<?php
-	// echo _("Comprobar");
-	// echo _("Nada mas utilizar");
-	?>
-	<!-- </div>
-	</div>
-</main> -->

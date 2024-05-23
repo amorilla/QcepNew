@@ -16,21 +16,70 @@ class Proces
         $this->usuari_id = $usuari_id;
     }
 
-    public function __get($name)
+
+
+    public function getId()
     {
-        if (property_exists($this, $name)) {
-            return $this->$name;
-        } else {
-            return null;
-        }
+        return $this->id;
     }
 
-    public function __set($name, $value)
+    /**
+     * @param $id
+     */
+    public function setId($id)
     {
-        if (property_exists($this, $name)) {
-            $this->$name = $value;
-        } else {
-            echo "Property $name does not exist.";
-        }
+        $this->id = $id;
+    }
+
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param $nom
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+    }
+
+    public function getTipus()
+    {
+        return $this->tipus;
+    }
+
+    /**
+     * @param $tipus
+     */
+    public function setTipus($tipus)
+    {
+        $this->tipus = $tipus;
+    }
+
+    public function getObjectiu()
+    {
+        return $this->objectiu;
+    }
+
+    /**
+     * @param $objectiu
+     */
+    public function setObjectiu($objectiu)
+    {
+        $this->objectiu = $objectiu;
+    }
+
+    public function getUsuari_id()
+    {
+        return $this->usuari_id;
+    }
+
+    /**
+     * @param $usuari_id
+     */
+    public function setUsuari_id($usuari_id)
+    {
+        $this->usuari_id = $usuari_id;
     }
 }

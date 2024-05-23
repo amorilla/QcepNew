@@ -15,5 +15,7 @@ class Portada
         $this->descripcio = $descripcio;
         $this->enllac = $enllac;
     }
+
+    
 }
 ?>

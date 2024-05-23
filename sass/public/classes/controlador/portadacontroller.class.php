@@ -49,7 +49,7 @@ class PortadaController extends Controlador
         $queIdioma = $this->queIdioma();
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id']) && isset($_POST['nom']) && isset($_POST['nom']) && isset($_POST['descripcio']) && isset($_POST['enllac'])) {
             $id = (int)$this->sanitize($_POST["id"]);
-            $nom = $this->sanitize($_POST["nom"]);
+            $nom = $_POST["nom"];
             $icono = $this->sanitize($_FILES["icono"]["name"]);
             $descripcio = $this->sanitize($_POST["descripcio"]);
             $enllac = $this->sanitize($_POST["enllac"]);
@@ -79,9 +79,9 @@ class PortadaController extends Controlador
             $nom = $this->sanitize($_POST["nom"]);
             $icono = $this->sanitize($_FILES["icono"]["name"]);
             $descripcio = $this->sanitize($_POST["descripcio"]);
-            $enllac = $this->sanitize($_POST["enllac"]);
+            $enllac = $this->sanitize($_POST["link"]);
 
-            var_dump($_FILES);
+            $icono = null;
             // Ejecutar el metodo para guardar el imagen, y hacer un return la ruta de donde se guarda
             if ($_FILES['icono']['error'] === 0) {
                 $fileInputName = 'icono';
@@ -108,8 +108,8 @@ class PortadaController extends Controlador
     public function delete()
     {
         $queIdioma = $this->queIdioma();
-        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['uid'])) {
-            $id = $_GET["uid"];
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
+            $id = $_POST["id"];
             $protadaVista = new PortadaVista();
             $protadaModel = new PortadaModel();
             $result = $protadaModel->delete($id);
@@ -159,7 +159,7 @@ class PortadaController extends Controlador
             $html .= "<input id='enllac' name='enllac' class='form-control'>";
             $html .= "</div>";
 
-            $html .= "<button type='submit' class='btn btn-primary'>MODIFICAR</button>";
+            $html .= "<button type='submit' class='btn btn-primary'>AÑADIR</button>";
             $html .= "<a href='https://www.qceproba.com/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
         }
 
@@ -175,25 +175,6 @@ class PortadaController extends Controlador
     {
         $html = "<div class='container mt-5'>";
         $html .= "<a href='?portada/addShow' class='btn btn-primary mb-3'>ADD</a>";
-
-        // 添加一个模态框
-        $html .= "<div class='modal fade' id='confirmDeleteModal' tabindex='-1' aria-labelledby='confirmDeleteModalLabel' aria-hidden='true'>";
-        $html .= "<div class='modal-dialog'>";
-        $html .= "<div class='modal-content'>";
-        $html .= "<div class='modal-header'>";
-        $html .= "<h5 class='modal-title' id='confirmDeleteModalLabel'>Confirm Delete</h5>";
-        $html .= "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
-        $html .= "</div>";
-        $html .= "<div class='modal-body'>";
-        $html .= "Estas seguro que quieres eliminar este logo ?";
-        $html .= "</div>";
-        $html .= "<div class='modal-footer'>";
-        $html .= "<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancel</button>";
-        $html .= "<button type='button' class='btn btn-danger' id='confirmDeleteButton'>Delete</button>";
-        $html .= "</div>";
-        $html .= "</div>";
-        $html .= "</div>";
-        $html .= "</div>";
 
         foreach ($obj as $value) {
             $html .= "<table class='table table-bordered'>";
@@ -214,7 +195,10 @@ class PortadaController extends Controlador
             $html .= "<tr>";
             $html .= "<td colspan='2'>";
             $html .= "<a href='?portada/showupdate&uid={$value["id"]}' class='btn btn-secondary me-2'>Update</a>";
-            $html .= "<button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#confirmDeleteModal' data-id='{$value["id"]}'>DELETE</button>";
+
+            // Agregar modal de confirmación de eliminación
+            $html .= '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="' . $value["id"] . '">DELETE</button>';
+
             $html .= "</td>";
             $html .= "</tr>";
 
@@ -223,8 +207,32 @@ class PortadaController extends Controlador
 
         $html .= "</div>";
 
+        // Modal de confirmación de eliminación
+        $html .= '
+        <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this item?
+                    </div>
+                    <div class="modal-footer">
+                        <form action="https://www.qceproba.com/?portada/delete" method="POST">
+                            <input type="hidden" id="deleteItemId" name="id" value =' . $value['id'] . '">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>';
+
         return $html;
     }
+
 
 
 
@@ -254,7 +262,7 @@ class PortadaController extends Controlador
             }
         }
 
-        $html .= "<button type='submit' class='btn btn-primary'>MODIFICAR</button>";
+        $html .= "</br><button type='submit' class='btn btn-primary'>MODIFICAR</button>";
         $html .= "<a href='https://www.qceproba.com/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
         $html .= "</form>";
         $html .= "</div>";

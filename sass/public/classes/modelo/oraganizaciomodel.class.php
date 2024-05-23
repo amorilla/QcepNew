@@ -21,7 +21,7 @@ class OraganizacioModel implements CRUDable
         }
 
 
-        $portada = $mysqli->prepare("SELECT * FROM Organitzacio");
+        $portada = $mysqli->prepare("SELECT * FROM organitzacio");
         if ($portada === false) {
             die("Error in preparing the SQL query: " . $mysqli->error);
         }
@@ -52,7 +52,7 @@ class OraganizacioModel implements CRUDable
                 throw new Exception("Failed to connect to MySQL: " . $mysqli->connect_error);
             }
 
-            $portada = $mysqli->prepare("INSERT INTO Organitzacio VALUES(?,?,?,?,?)");
+            $portada = $mysqli->prepare("INSERT INTO organitzacio VALUES(?,?,?,?,?)");
 
             if ($portada) {
                 $portada->bind_param("issss", $id, $nom, $icono, $descripcio, $enllac);
@@ -93,7 +93,7 @@ class OraganizacioModel implements CRUDable
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
         }
 
-        $query = "UPDATE Organitzacio SET Nom=?, email=?, web=?, logo=? WHERE id = ?";
+        $query = "UPDATE organitzacio SET Nom=?, email=?, web=?, logo=? WHERE id = ?";
 
         $portada = $mysqli->prepare($query);
 

@@ -11,4 +11,8 @@
 
 .card:hover .card-text {
   color: #6c757d;
+}
+
+#logoImg {
+  border-radius: 50%;
 }/*# sourceMappingURL=main.css.map */

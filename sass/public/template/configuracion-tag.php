@@ -8,7 +8,7 @@
                         <li class="list-group-item"><a href="?portada/show" class="text-decoration-none">Portada</a></li>
                         <li class="list-group-item"><a href="?oraganizacio/show" class="text-decoration-none">Organización</a></li>
                         <li class="list-group-item"><a href="?user/config" class="text-decoration-none">Configuración Usuario</a></li>
-                        <li class="list-group-item"><a href="#" class="text-decoration-none">Configuración Grupos</a></li>
+                        <li class="list-group-item"><a href="?documenttext/showall" class="text-decoration-none">Documentos</a></li>
                     <?php endif; ?>
                     <svg class="bi" width="16" height="16" fill="currentColor">
                         <use xlink:href="#people-fill" />

@@ -188,42 +188,22 @@ class UserController extends Controlador
     public function addUser()
     {
         // 检查请求方法是否为 POST
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // 获取请求体中的原始数据
-            $input_data = file_get_contents('php://input');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['admin'] === 1) {
 
-            // 解析 JSON 数据
-            $data = json_decode($input_data, true);
-
-            // 检查是否成功解析 JSON 数据
-            if ($data === null) {
-                // 如果解析失败，返回错误信息
-                echo json_encode(['success' => false, 'error' => 'Invalid JSON data']);
-                return;
-            }
-
-            // 提取用户名、邮箱和管理员信息
-            $username = $data['username'];
-            $email = $data['email'];
-            $isAdmin = $data['isAdmin'];
-
-            // 创建用户对象
-            $newUser = new Usuari($email, $username, $isAdmin);
-
-            // 执行添加用户操作
-            $result = $this->create($newUser);
-
-            // 返回响应
-            if ($result) {
-                echo json_encode(['success' => true]);
-            } elseif ($result === "exist") {
-                echo json_encode(['success' => false, 'error' => 'User already exists']);
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            if ($_POST['isAdmin'] === "on") {
+                $admin = 1;
             } else {
-                echo json_encode(['success' => false, 'error' => 'Failed to add new user']);
+                $admin = 0;
             }
+
+            $newUser = new Usuari($email, $username, $admin);
+
+            $result = $this->create($newUser);
+            header("Location: https://www.qceproba.com/?user/config");
         } else {
-            // 如果不是 POST 请求，返回错误信息
-            echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+            throw new Exception("No tienes el permiso de confiugrar los usuarios");
         }
     }
 
@@ -231,12 +211,46 @@ class UserController extends Controlador
     // La function para guardar un nuevo usuario en la base de datos.
     private function create($user)
     {
-        $userModel = new UsuariModel;
-        $creado = $userModel->create($user);
-        if ($creado) {
-            return true;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['admin'] === 1) {
+            $userModel = new UsuariModel;
+            $creado = $userModel->create($user);
+            if ($creado) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            throw new Exception("No tienes el permiso de confiugrar los usuarios");
+        }
+    }
+    public function delete()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['admin'] === 1) {
+            $uModel = new UsuariModel();
+            $uModel->delete($_POST["user_id"]);
+            header("Location: https://www.qceproba.com/?user/config");
+        } else {
+            throw new Exception("No tienes el permiso de confiugrar los usuarios");
+        }
+    }
+    public function update()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['admin'] === 1) {
+            $uId = $_POST["user_id"];
+            $username = $_POST["username"];
+            $email = $_POST["email"];
+            if ($_POST['admin'] === "on") {
+                $admin = 1;
+            } else {
+                $admin = 0;
+            }
+            $usuari = new Usuari($email, $username, $admin);
+            $usuari->setId($uId);
+            $uModel = new UsuariModel();
+            $uModel->update($usuari);
+            header("Location: https://www.qceproba.com/?user/config");
+        } else {
+            throw new Exception("No tienes el permiso de confiugrar los usuarios");
         }
     }
 
@@ -251,18 +265,77 @@ class UserController extends Controlador
             }
             $html .=
                 "<tr>
-                <td class='dtr-control'>
-                    <div class='form-check font-size-16'> <input class='form-check-input' type='checkbox' id='orderlistIdCheck-12'> <label class='form-check-label' for='orderlistIdCheck-12'></label> </div>
-                </td>
-                <td>
-                <div class='customerlist-name'>{$user['id']}</div>
-                <td>{$user['email']}</td>
-                <td>{$user['username']}</td>
-                <td>{$admin}</td>
-                <td>No hay</td>
+            <td class='dtr-control'>
+                <div class='form-check font-size-16'> <input class='form-check-input' type='checkbox' id='orderlistIdCheck-12'> <label class='form-check-label' for='orderlistIdCheck-12'></label> </div>
             </td>
-            </tr>";
+            <td>
+                <div class='customerlist-name'>{$user['id']}</div>
+            </td>
+            <td>{$user['email']}</td>
+            <td>{$user['username']}</td>
+            <td>{$admin}</td>
+            <td>No hay</td>
+            <td><i class='fa-solid fa-pencil' data-bs-toggle='modal' data-bs-target='#editUserModal' data-id='{$user['id']}' data-email='{$user['email']}' data-username='{$user['username']}' data-admin='{$user['es_administrador']}'></i></td>
+            <td><i class='fa-solid fa-trash' data-bs-toggle='modal' data-bs-target='#deleteUserModal' data-id='{$user['id']}'></i></td>
+        </tr>";
         }
+        $html .= "
+        <!-- Delete User Modal -->
+        <div class='modal fade' id='deleteUserModal' tabindex='-1' aria-labelledby='deleteUserModalLabel' aria-hidden='true'>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h5 class='modal-title' id='deleteUserModalLabel'>Confirm Delete</h5>
+                        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                    </div>
+                    <div class='modal-body'>
+                        Are you sure you want to delete this user?
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancel</button>
+                        <form id='deleteUserForm' action='https://www.qceproba.com/?user/delete' method='post'>
+                            <input type='hidden' name='user_id' id='deleteUserId'>
+                            <button type='submit' class='btn btn-danger'>Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit User Modal -->
+        <div class='modal fade' id='editUserModal' tabindex='-1' aria-labelledby='editUserModalLabel' aria-hidden='true'>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <h5 class='modal-title' id='editUserModalLabel'>Edit User</h5>
+                        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                    </div>
+                    <div class='modal-body'>
+                        <form id='editUserForm' action='https://www.qceproba.com/?user/update' method='post'>
+                            <input type='hidden' name='user_id' id='editUserId'>
+                            <div class='mb-3'>
+                                <label for='editEmail' class='form-label'>Email</label>
+                                <input type='email' class='form-control' id='editEmail' name='email' required>
+                            </div>
+                            <div class='mb-3'>
+                                <label for='editUsername' class='form-label'>Username</label>
+                                <input type='text' class='form-control' id='editUsername' name='username' required>
+                            </div>
+                            <div class='mb-3 form-check'>
+                                <input type='checkbox' class='form-check-input' id='editAdmin' name='admin'>
+                                <label class='form-check-label' for='editAdmin'>Administrator</label>
+                            </div>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancel</button>
+                                <button type='submit' class='btn btn-success'>Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        ";
+
         return $html;
     }
 }

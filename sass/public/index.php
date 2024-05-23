@@ -10,6 +10,12 @@ spl_autoload_register("Autoloader::load");
 EmpresaDatos::sessionDatos();
 
 
+// $cModel = new GrupInteresModel();
+// $datos = $cModel->getGrupByName("Claustre");
+
+
+// var_dump($datos);
+
 
 try {
     $cFront = new FrontController();

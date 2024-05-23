@@ -61,10 +61,52 @@ class UsuariModel implements CRUDable
 
 
 
-    public function update($id)
+    public function update($obj)
     {
-        // Implement update method using PDO
+        try {
+            $query = "UPDATE usuari SET username = :username, email = :email, es_administrador = :isAdmin WHERE id = :id";
+            $statement = $this->pdo->prepare($query);
+
+            $id = $obj->getId();
+            $username = $obj->getUsername();
+            $email = $obj->getEmail();
+            $isAdmin = $obj->getAdmin();
+
+            $statement->bindParam(':id', $id);
+            $statement->bindParam(':username', $username);
+            $statement->bindParam(':email', $email);
+            $statement->bindParam(':isAdmin', $isAdmin);
+
+            $statement->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            die("Error updating user: " . $e->getMessage());
+        }
     }
+
+    public function getUserByID($id)
+    {
+        try {
+            $query = "SELECT * FROM usuari WHERE id = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+
+            $user = $statement->fetch(PDO::FETCH_ASSOC); // 获取用户数据
+
+            if ($user) {
+                // 如果找到匹配的用户，则返回一个 Usuari 实例
+                return new Usuari($user['email'], $user['username'], $user['es_administrador']); // 假设这是 Usuari 类的构造函数
+            } else {
+                // 如果未找到匹配的用户，则返回 null 或抛出异常，具体取决于需求
+                return null;
+            }
+        } catch (PDOException $e) {
+            die("Error fetching user by ID: " . $e->getMessage());
+        }
+    }
+
 
     public function existCorreo($email)
     {
@@ -80,8 +122,16 @@ class UsuariModel implements CRUDable
         }
     }
 
-    public function delete($obj)
+    public function delete($id)
     {
-        // Implement delete method using PDO
+        try {
+            $query = "DELETE FROM usuari WHERE id = :id";
+            $statement = $this->pdo->prepare($query);
+            $statement->bindParam(':id', $id);
+            $statement->execute();
+            return true;
+        } catch (PDOException $e) {
+            die("Error deleting user: " . $e->getMessage());
+        }
     }
 }

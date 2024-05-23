@@ -6,12 +6,11 @@
                 <div class="col-sm-12 col-md-12 d-flex justify-content-between align-items-center">
                     <!-- 显示搜索框 -->
                     <div id="order-list_filter" class="dataTables_filter">
-                        <input type="text" class="form-control" autocomplete="off" id="searchTableList" placeholder="Search...">
-              
+                        <input type="text" class="form-control" autocomplete="off" id="searchTableListUser" placeholder="Search...">
                     </div>
                     <!-- 显示按钮 -->
                     <button type="button" class="btn btn-success mb-2 me-2" data-bs-toggle="modal" data-bs-target="#newOrderModal">
-                       Add New Order
+                        Add New Order
                     </button>
                 </div>
             </div>
@@ -26,30 +25,30 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="createorder-form">
+                            <form id="createorder-form" action="https://www.qceproba.com/?user/addUser" method="post">
                                 <div class="mb-3">
                                     <label for="customername-field" class="form-label">Username</label>
-                                    <input type="text" id="customername-field" class="form-control" placeholder="Enter username" required>
+                                    <input type="text" id="customername-field" name="username" class="form-control" placeholder="Enter username" required>
                                     <div class="invalid-feedback" id="username-error">Please enter a username.</div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email-field" class="form-label">Email</label>
-                                    <input type="email" id="email-field" class="form-control" placeholder="Enter email" required>
+                                    <input type="email" id="email-field" name="email" class="form-control" placeholder="Enter email" required>
                                     <div class="invalid-feedback" id="email-error">Please enter a valid email.</div>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <input type="checkbox" id="admin-input" class="form-check-input">
+                                    <input type="checkbox" id="admin-input" name="isAdmin" class="form-check-input">
                                     <label class="form-check-label" for="admin-input">Administrator</label>
                                 </div>
                                 <div class="mb-3">
                                     <label for="group-input" class="form-label">Group</label>
-                                    <select class="form-select" id="group-input">
+                                    <select class="form-select" id="group-input" name="group">
                                         <option selected disabled>Select a group</option>
-                                        <option>Group 1</option>
-                                        <option>Group 2</option>
-                                        <option>Group 3</option>
-                                        <option>Group 4</option>
-                                        <option>Group 5</option>
+                                        <option value="1">Group 1</option>
+                                        <option value="2">Group 2</option>
+                                        <option value="3">Group 3</option>
+                                        <option value="4">Group 4</option>
+                                        <option value="5">Group 5</option>
                                     </select>
                                 </div>
                                 <div class="text-end">
@@ -58,12 +57,11 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- end modal body -->
                     </div>
-                    <!-- end modal-content -->
                 </div>
-                <!-- end modal-dialog -->
             </div>
+
+
 
             <div class="row">
                 <div class="col-sm-12">
@@ -81,6 +79,8 @@
                                 <th class="align-middle sorting" tabindex="0" aria-controls="order-list" rowspan="1" colspan="1" style="width: 137px;" aria-label="Date: activate to sort column ascending">Username</th>
                                 <th class="align-middle sorting" tabindex="0" aria-controls="order-list" rowspan="1" colspan="1" style="width: 79px;" aria-label="Total: activate to sort column ascending">Administrator</th>
                                 <th class="align-middle sorting" tabindex="0" aria-controls="order-list" rowspan="1" colspan="1" style="width: 198px;" aria-label="Payment Status: activate to sort column ascending">Groups</th>
+                                <th class="align-middle sorting" tabindex="0" aria-controls="order-list" rowspan="1" colspan="1" style="width: 198px;" aria-label="Payment Status: activate to sort column ascending">Configuracion</th>
+                                <th class="align-middle sorting" tabindex="0" aria-controls="order-list" rowspan="1" colspan="1" style="width: 198px;" aria-label="Payment Status: activate to sort column ascending">Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -94,3 +94,65 @@
         </div>
     </div>
 </div>
+<script>
+    function validateForm(event) {
+        // Add form validation logic if needed
+        // If form is valid, return true to allow submission
+        // If form is not valid, return false or use event.preventDefault() to prevent submission
+        var isValid = true; // Assume form is valid
+
+        // Example validation logic
+        var username = document.getElementById('customername-field').value;
+        var email = document.getElementById('email-field').value;
+
+        if (!username) {
+            document.getElementById('username-error').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('username-error').style.display = 'none';
+        }
+
+        if (!email) {
+            document.getElementById('email-error').style.display = 'block';
+            isValid = false;
+        } else {
+            document.getElementById('email-error').style.display = 'none';
+        }
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if validation fails
+        }
+
+        return isValid;
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var deleteUserModal = document.getElementById('deleteUserModal');
+        deleteUserModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-id');
+            var deleteUserIdInput = document.getElementById('deleteUserId');
+            deleteUserIdInput.value = userId;
+        });
+
+        var editUserModal = document.getElementById('editUserModal');
+        editUserModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var userId = button.getAttribute('data-id');
+            var email = button.getAttribute('data-email');
+            var username = button.getAttribute('data-username');
+            var isAdmin = button.getAttribute('data-admin') === "1";
+
+            var editUserIdInput = document.getElementById('editUserId');
+            var editEmailInput = document.getElementById('editEmail');
+            var editUsernameInput = document.getElementById('editUsername');
+            var editAdminInput = document.getElementById('editAdmin');
+
+            editUserIdInput.value = userId;
+            editEmailInput.value = email;
+            editUsernameInput.value = username;
+            editAdminInput.checked = isAdmin;
+        });
+    });
+</script>

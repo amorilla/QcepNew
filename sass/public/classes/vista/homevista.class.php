@@ -1,9 +1,11 @@
 <?php
 
-class HomeVista extends Vista{
-        
-    
-    public static function show($lang, $fitxerDeTraduccions ) {
+class HomeVista extends Vista
+{
+
+
+    public static function show($lang, $fitxerDeTraduccions, $oDatos, $docDatos, $sDatos)
+    {
         require_once $fitxerDeTraduccions;
         echo "<!DOCTYPE html><html lang=\"en\">";
         include "template/head-tag.php";
@@ -14,4 +16,3 @@ class HomeVista extends Vista{
         echo "</body></html>";
     }
 }
-

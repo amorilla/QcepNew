@@ -21,7 +21,7 @@ class PortadaModel implements CRUDable
         }
 
         if ($obj == null) {
-            $portada = $mysqli->prepare("SELECT * FROM portada");
+            $portada = $mysqli->prepare("SELECT * FROM apartat");
             if ($portada === false) {
                 die("Error in preparing the SQL query: " . $mysqli->error);
             }
@@ -38,7 +38,7 @@ class PortadaModel implements CRUDable
             return $rows;
         } else {
             $id = $obj;
-            $portada = $mysqli->prepare("SELECT * FROM portada where id = ?");
+            $portada = $mysqli->prepare("SELECT * FROM apartat where id = ?");
             if ($portada === false) {
                 die("Error in preparing the SQL query: " . $mysqli->error);
             }
@@ -69,10 +69,10 @@ class PortadaModel implements CRUDable
                 throw new Exception("Failed to connect to MySQL: " . $mysqli->connect_error);
             }
 
-            $portada = $mysqli->prepare("INSERT INTO portada VALUES(?,?,?,?,?)");
+            $portada = $mysqli->prepare("INSERT INTO apartat VALUES(?,?,?,?,?)");
 
             if ($portada) {
-                $portada->bind_param("issss", $id, $nom, $icono, $descripcio, $enllac);
+                $portada->bind_param("ssssi", $nom, $icono, $descripcio, $enllac, $id,);
 
                 // Ejecutar
                 $portada->execute();
@@ -110,11 +110,20 @@ class PortadaModel implements CRUDable
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
         }
 
-        $portada = $mysqli->prepare("UPDATE portada SET nom=?, icono=?, descripcio=?, enllac=? WHERE id = ?");
+        if ($icono === null) {
+            $portada = $mysqli->prepare("UPDATE apartat SET nom=?, descripcio=?, link=? WHERE id = ?");
+        } else {
+            $portada = $mysqli->prepare("UPDATE apartat SET nom=?, icono=?, descripcio=?, link=? WHERE id = ?");
+        }
 
         if ($portada) {
             // Poner los paramentros
-            $portada->bind_param("sssss", $nom, $icono, $descripcio, $enllac, $id);
+            if ($icono === null) {
+                $portada->bind_param("ssss", $nom, $descripcio, $enllac, $id);
+            } else {
+                $portada->bind_param("sssss", $nom, $icono, $descripcio, $enllac, $id);
+            }
+
 
             // Ejecutar
             $portada->execute();
@@ -148,7 +157,7 @@ class PortadaModel implements CRUDable
         if ($mysqli->connect_errno) {
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
         }
-        $portada = $mysqli->prepare("DELETE FROM portada  WHERE id = ?");
+        $portada = $mysqli->prepare("DELETE FROM apartat  WHERE id = ?");
         if ($portada) {
             // Poner los paramentros
             $portada->bind_param("i", $id);
@@ -180,7 +189,7 @@ class PortadaModel implements CRUDable
     {
         $mysqli = new mysqli(self::HOST, self::USERINSERT, self::PASSRINSERT, self::DB);
 
-        $sql = "SELECT MAX(id) AS max_id FROM portada";
+        $sql = "SELECT MAX(id) AS max_id FROM apartat";
 
         $result = $mysqli->query($sql);
 
