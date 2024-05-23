@@ -166,16 +166,17 @@
                         <div class="card-body">
                             <!-- table -->
                             <?php
+                            echo '<div class="table-responsive">';
+                            echo '<table class="table table-striped table-hover">';
+                            echo '<thead class="">';
+                            echo '<tr>';
+                            echo '<th scope="col">Document</th>';
+                            echo '<th scope="col">Link</th>';
+                            if (isset($_SESSION['admin']) && $_SESSION["admin"] === 1) {
+                                echo '<th scope="col">Action</th>';
+                            }
                             if (isset($_SESSION['admin']) && $_SESSION['admin'] === 1) {
-                                echo '<div class="table-responsive">';
-                                echo '<table class="table table-striped table-hover">';
-                                echo '<thead class="table-danger">';
-                                echo '<tr>';
-                                echo '<th scope="col">Document</th>';
-                                echo '<th scope="col">Link</th>';
-                                if (isset($_SESSION['admin']) && $_SESSION["admin"] === 1) {
-                                    echo '<th scope="col">Action</th>';
-                                }
+
                                 echo '</tr>';
                                 echo '</thead>';
                                 echo '<tbody>';
@@ -193,30 +194,29 @@
                                 echo '</td>';
                                 echo '</form>';
                                 echo '</tr>';
-
-                                foreach ($documents as $document) {
-                                    $docId = $document->getId();
-                                    echo '<tr>';
-                                    echo '<td class="text-body">' . $document->getNom() . '</td>';
-                                    $link = $document->getLink();
-                                    $maxLength = 30;
-                                    $trimmedLink = strlen($link) > $maxLength ? substr($link, 0, $maxLength) . '...' : $link;
-                                    echo '<td><a href="' . $document->getLink() . '" target="_blank">' . $trimmedLink . '</a></td>';
-                                    if (isset($_SESSION['admin']) && $_SESSION['admin'] === 1) {
-                                        echo '<td>';
-                                        echo '<div class="btn-group">';
-                                        echo '<a href="#" class="btn btn-outline-primary edit-document" data-bs-toggle="modal" data-bs-target="#updateModal' . $docId . '"><i class="fa-solid fa-pencil"></i></a>';
-                                        echo '<a href="#" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $docId . '"><i class="fa-solid fa-trash"></i></a>';
-                                        echo '</div>';
-                                        echo '</td>';
-                                    }
-                                    echo '</tr>';
-                                }
-
-                                echo '</tbody>';
-                                echo '</table>';
-                                echo '</div>'; // end of .table-responsive
                             }
+                            foreach ($documents as $document) {
+                                $docId = $document->getId();
+                                echo '<tr>';
+                                echo '<td class="text-body">' . $document->getNom() . '</td>';
+                                $link = $document->getLink();
+                                $maxLength = 30;
+                                $trimmedLink = strlen($link) > $maxLength ? substr($link, 0, $maxLength) . '...' : $link;
+                                echo '<td><a href="' . $document->getLink() . '" target="_blank">' . $trimmedLink . '</a></td>';
+                                if (isset($_SESSION['admin']) && $_SESSION['admin'] === 1) {
+                                    echo '<td>';
+                                    echo '<div class="btn-group">';
+                                    echo '<a href="#" class="btn btn-outline-primary edit-document" data-bs-toggle="modal" data-bs-target="#updateModal' . $docId . '"><i class="fa-solid fa-pencil"></i></a>';
+                                    echo '<a href="#" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $docId . '"><i class="fa-solid fa-trash"></i></a>';
+                                    echo '</div>';
+                                    echo '</td>';
+                                }
+                                echo '</tr>';
+                            }
+
+                            echo '</tbody>';
+                            echo '</table>';
+                            echo '</div>'; // end of .table-responsive
                             ?>
 
                             <!-- end table -->

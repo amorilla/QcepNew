@@ -19,7 +19,7 @@
         $html = '';
 
         foreach ($result as $key => $value) {
-            $html .= "<li class='ms-3'><a href='{$value["link"]}'><img class='bi' width='24' height='24' src='{$value["icono"]}'target='_blank' title='{$value["nom"]}'></a></li>";
+            $html .= "<li class='ms-3'><a href='{$value["link"]}' target='_blank'><img class='bi' width='24' height='24' src='{$value["icono"]}' title='{$value["nom"]}'></a></li>";
         }
         echo $html;
 
