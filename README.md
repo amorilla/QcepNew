@@ -16,5 +16,7 @@ documentos, indicadores... Según la norma ISO9001.
 Para el resto de usuarios. Permite el acceso a los apartados y documentos según los
 permisos otorgados en el Drive.
 
-[Como utilizar]
-Installar el paquete
+**Configuración**  
+Copiar `sass/public/classes/config/config-sample.php` en `sass/public/classes/config/config.php`  
+Modificar los valores.
+
