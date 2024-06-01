@@ -1,4 +1,5 @@
 <?php
+
 class PortadaController extends Controlador
 {
     public function show()
@@ -62,7 +63,7 @@ class PortadaController extends Controlador
             $protadaVista = new PortadaVista();
             $protadaModel = new PortadaModel();
             $result = $protadaModel->create($portada);
-            header("Location: https://www.qceproba.com/?portada/show");
+            header("Location: ".$GLOBALS['CFG']->url."/?portada/show");
         } else {
             $errorVista = new ErrorVista();
             $texto = new Exception('No existe la portada que quieres modificar');
@@ -160,7 +161,7 @@ class PortadaController extends Controlador
             $html .= "</div>";
 
             $html .= "<button type='submit' class='btn btn-primary'>AÑADIR</button>";
-            $html .= "<a href='https://www.qceproba.com/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
+            $html .= "<a href='".$GLOBALS['CFG']->url."/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
         }
 
         $html .= "</form>";
@@ -220,7 +221,7 @@ class PortadaController extends Controlador
                         Are you sure you want to delete this item?
                     </div>
                     <div class="modal-footer">
-                        <form action="https://www.qceproba.com/?portada/delete" method="POST">
+                        <form action="'.$GLOBALS['CFG']->url.'/?portada/delete" method="POST">
                             <input type="hidden" id="deleteItemId" name="id" value =' . $value['id'] . '">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -263,7 +264,7 @@ class PortadaController extends Controlador
         }
 
         $html .= "</br><button type='submit' class='btn btn-primary'>MODIFICAR</button>";
-        $html .= "<a href='https://www.qceproba.com/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
+        $html .= "<a href='".$GLOBALS['CFG']->url."/?portada/show' class='btn btn-secondary ms-2'>Volver</a>";
         $html .= "</form>";
         $html .= "</div>";
 

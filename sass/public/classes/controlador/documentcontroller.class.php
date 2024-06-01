@@ -36,7 +36,7 @@ class DocumentController
 
             $dModel = new DocumentModel();
             $dModel->create(new Document(null, $nombre, '', $link, $porces));
-            header("Location: https://www.qceproba.com/?document/show&process=" . $_POST["proces"]);
+            header("Location: ".$GLOBALS['CFG']->url."/?document/show&process=" . $_POST["proces"]);
         }
     }
 
@@ -45,7 +45,7 @@ class DocumentController
         if (isset($_SESSION['admin']) && $_SESSION['admin'] === 1) {
             $dModel = new documentModel();
             $dModel->delete($_POST['doc_id']);
-            header("Location: https://www.qceproba.com/?document/show&process=" . $_POST["proces_id"]);
+            header("Location: ".$GLOBALS['CFG']->url."/?document/show&process=" . $_POST["proces_id"]);
         }
     }
 
@@ -59,7 +59,7 @@ class DocumentController
         $doc = new Document($docId, $nom, '', $link, $proces);
         $dModel = new documentModel();
         $dModel->update($doc);
-        header("Location: https://www.qceproba.com/?document/show&process=" . $proces);
+        header("Location: ".$GLOBALS['CFG']->url."/?document/show&process=" . $proces);
     }
 
     public function generateHeader($org)

@@ -2,9 +2,9 @@
 
 $orderData = $_POST['orderData'];
 
-$dsn = 'mysql:host=localhost;dbname=qcep';
-$username = 'usr_generic';
-$password = '2024@Thos';
+$dsn = 'mysql:host='.$GLOBALS['CFG']->dbhost.';dbname='.$GLOBALS['CFG']->dbname;
+$username = $GLOBALS['CFG']->dbuser;
+$password = $GLOBALS['CFG']->dbpass;
 
 try {
     $pdo = new PDO($dsn, $username, $password);

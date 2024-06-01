@@ -12,10 +12,10 @@ class DocumentModel
 
     public function connect()
     {
-        $dbhost = 'localhost';
-        $dbuser = 'usr_generic';
-        $dbpassword = '2024@Thos';
-        $database = 'qcep';
+        $dbhost = $GLOBALS['CFG']->dbhost;
+        $dbuser = $GLOBALS['CFG']->dbuser;
+        $dbpassword = $GLOBALS['CFG']->dbpass;
+        $database = $GLOBALS['CFG']->dbname;
         $conn = new mysqli($dbhost, $dbuser, $dbpassword, $database);
         return $conn;
     }

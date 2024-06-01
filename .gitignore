@@ -1,4 +1,4 @@
 .settings/*
 .project
 guia-proves.txt
-sass/public/config/config.php
+sass/public/classes/config/config.php

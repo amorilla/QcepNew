@@ -5,7 +5,7 @@ class ConfigController extends Controlador
    public function show()
    {
       $queIdioma = $this->queIdioma();
-      if ($_SESSION["admin"] === 1) {
+      if (isset($_SESSION["admin"]) && $_SESSION["admin"] === 1) {
          $confVista = new ConfigVista();
          $confVista->show($queIdioma);
       }else{

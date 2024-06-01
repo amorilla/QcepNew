@@ -5,7 +5,9 @@
             <!-- 删除按钮 -->
             <button type="button" class="btn btn-danger btn-sm delete-document" data-toggle="modal" data-target="#deleteModal">Delete</button>
             <!-- 返回按钮 -->
-            <a href="https://www.qceproba.com/?documenttext/showall" class="btn btn-secondary btn-sm volver-button">Volver</a>
+            <?php
+              echo '<a href="'.$GLOBALS['CFG']->url.'/?documenttext/showall" class="btn btn-secondary btn-sm volver-button">Volver</a>'
+            ?>
         </div>
     </div>
     <!-- 模态框 -->
@@ -101,7 +103,7 @@
     document.getElementById('confirmDelete').addEventListener('click', function() {
         var form = document.createElement('form');
         form.method = 'post';
-        form.action = 'https://www.qceproba.com/?documenttext/delete';
+        form.action = '$GLOBALS['CFG']->url."/?documenttext/delete"';
 
         var input = document.createElement('input');
         input.type = 'hidden';

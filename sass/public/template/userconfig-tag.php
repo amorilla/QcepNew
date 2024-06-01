@@ -25,7 +25,9 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="createorder-form" action="https://www.qceproba.com/?user/addUser" method="post">
+                        <?php
+                            echo '<form id="createorder-form" action="'.$GLOBALS['CFG']->url.'/?user/addUser" method="post">';
+                        ?>
                                 <div class="mb-3">
                                     <label for="customername-field" class="form-label">Username</label>
                                     <input type="text" id="customername-field" name="username" class="form-control" placeholder="Enter username" required>

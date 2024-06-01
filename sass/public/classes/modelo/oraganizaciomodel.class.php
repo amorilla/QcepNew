@@ -1,25 +1,18 @@
 <?php
+
 class OraganizacioModel implements CRUDable
 {
-    const HOST = 'localhost';
 
-    const USEREAD = 'usr_consulta';
-
-    const PASSREAD = '2024@Thos';
-
-    const USERINSERT = 'usr_generic';
-
-    const PASSRINSERT = '2024@Thos';
-
-    const DB = 'qcep';
-
+	public function opendb($user, $obj = null) {
+	    return mysqli_connect($GLOBALS['CFG']->dbhost, $user, $GLOBALS['CFG']->dbpass, $GLOBALS['CFG']->dbname);
+	}
+		
     public function read($obj = null)
     {
-        $mysqli = mysqli_connect(self::HOST, self::USEREAD, self::PASSREAD, self::DB);
+        $mysqli = $this->opendb($GLOBALS['CFG']->dbuserread);
         if ($mysqli->connect_errno) {
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
         }
-
 
         $portada = $mysqli->prepare("SELECT * FROM organitzacio");
         if ($portada === false) {
@@ -46,7 +39,7 @@ class OraganizacioModel implements CRUDable
             $descripcio = $obj->descripcio;
             $enllac = $obj->enllac;
 
-            $mysqli = new mysqli(self::HOST, self::USERINSERT, self::PASSRINSERT, self::DB);
+            $mysqli = $this->opendb($GLOBALS['CFG']->dbuser);
 
             if ($mysqli->connect_errno) {
                 throw new Exception("Failed to connect to MySQL: " . $mysqli->connect_error);
@@ -87,7 +80,7 @@ class OraganizacioModel implements CRUDable
         $logo = $obj->logo;
         $id = 1;
 
-        $mysqli = mysqli_connect(self::HOST, self::USERINSERT, self::PASSRINSERT, self::DB);
+        $mysqli = $this->opendb($GLOBALS['CFG']->dbuser);
 
         if ($mysqli->connect_errno) {
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
@@ -128,7 +121,7 @@ class OraganizacioModel implements CRUDable
     {
         $id = $obj;
 
-        $mysqli = mysqli_connect(self::HOST, self::USERINSERT, self::PASSRINSERT, self::DB);
+        $mysqli = $this->opendb($GLOBALS['CFG']->dbuser);
 
         if ($mysqli->connect_errno) {
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
@@ -163,7 +156,7 @@ class OraganizacioModel implements CRUDable
     }
     public function maxId()
     {
-        $mysqli = new mysqli(self::HOST, self::USERINSERT, self::PASSRINSERT, self::DB);
+        $mysqli = $this->opendb($GLOBALS['CFG']->dbuser);
 
         $sql = "SELECT MAX(id) AS max_id FROM portada";
 

@@ -3,7 +3,8 @@
 		<div class="d-flex flex-wrap align-items-center justify-content-between">
 			<!-- Logo -->
 			<a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-				<img src="<?= $_SESSION['logo'][0]["logo"] ?>" alt="Logo" id="logoImg" class="logoImg me-2" style="width: 50px; height: auto;">
+				<?php if (isset($_SESSION["logo"])) { echo '<img src='.$_SESSION["logo"][0]["logo"].' alt="Logo" id="logoImg" class="logoImg me-2" style="width: 50px; height: auto;">';}
+				?>
 			</a>
 
 			<!-- Navigation -->
@@ -87,7 +88,9 @@
 
 <script>
 	document.getElementById('googleSignInButton').addEventListener('click', function() {
-		window.location.href = 'https://www.qceproba.com?user/loginGoogle';
+	<?php
+		echo "window.location.href = '".$GLOBALS['CFG']->url."?user/loginGoogle';";
+	?>
 	});
 </script>
 

@@ -37,7 +37,9 @@
     </div>
 
     <!-- Hidden form for POST request -->
-    <form id="deleteForm" action="https://www.qceproba.com/?proces/delete" method="POST" style="display:none;">
+    <?php
+      echo '<form id="deleteForm" action="'.$GLOBALS['CFG']->url.'/?proces/delete" method="POST" style="display:none;">'
+    ?>
         <input type="hidden" name="process" value="<?= htmlspecialchars($proces->getId()) ?>">
     </form>
 
@@ -381,7 +383,7 @@
 
     if (isset($_SESSION['admin']) && $_SESSION['admin'] === 1) {
         echo "<tr>";
-        echo '<form action="https://www.qceproba.com/?avaluacio/create" method="post">';
+        echo '<form action="'.$GLOBALS['CFG']->url.'/?avaluacio/create" method="post">';
         echo '<input type="hidden" name="proces_id" id="proces_id" value="' . $proces->getId() . '">';
         echo '<td><input class="form-control" type="text" name="tipus" placeholder="Tipus" required>';
         if (isset($error["tipus"])) {
@@ -479,7 +481,7 @@ foreach ($avaluacions as $avaluacio) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form action="https://www.qceproba.com/?avaluacio/delete" method="POST">
+                    <form action="'.$GLOBALS['CFG']->url.'/?avaluacio/delete" method="POST">
                         <input type="hidden" name="id" value="' . $avaluacio->__get('id') . '">
                         <input type="hidden" name="proces_id" value="' . $proces->getId() . '">
                         <button type="submit" class="btn btn-danger">Delete</button>

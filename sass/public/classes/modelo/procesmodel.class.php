@@ -1,5 +1,4 @@
 <?php
-include './classes/config/UsuarioDB.php';
 
 class ProcesModel implements CRUDable
 {
@@ -7,8 +6,8 @@ class ProcesModel implements CRUDable
 
     public function __construct()
     {
-        $dsn = "mysql:host=" . HOST . ";dbname=" . DB;
-        $this->pdo = new PDO($dsn, ROOT, PASSRINSERT);
+        $dsn = "mysql:host=" . $GLOBALS['CFG']->dbhost . ";dbname=" . $GLOBALS['CFG']->dbname;
+        $this->pdo = new PDO($dsn, $GLOBALS['CFG']->dbuser, $GLOBALS['CFG']->dbpass);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 

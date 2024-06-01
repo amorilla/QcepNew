@@ -114,7 +114,7 @@ class DocumentTextController extends Controlador
                     }
                 }
                 // 重定向到文档显示页面
-                header("Location: https://www.qceproba.com/?documenttext/showall");
+                header("Location: ".$GLOBALS['CFG']->url."/?documenttext/showall");
             } else {
                 throw new Exception("No tienes el permiso para modificar los documentos");
             }
@@ -132,7 +132,7 @@ class DocumentTextController extends Controlador
             $sModel->deleteAllByDocument($dId);
             $dModel = new DocumentTextoModel();
             $dModel->delete($dId);
-            header("Location: https://www.qceproba.com/?documenttext/showall");
+            header("Location: ".$GLOBALS['CFG']->url."/?documenttext/showall");
         } else {
             throw new Exception("No tienes el permiso para modificar los documentos");
         }
@@ -196,7 +196,7 @@ class DocumentTextController extends Controlador
                     }
                 }
                 // 重定向到文档显示页面
-                header("Location: https://www.qceproba.com/?documenttext/showall");
+                header("Location: ".$GLOBALS['CFG']->url."/?documenttext/showall");
             } else {
                 throw new Exception("No tienes el permiso para modificar los documentos");
             }

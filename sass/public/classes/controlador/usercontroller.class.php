@@ -56,9 +56,9 @@ class UserController extends Controlador
 
     public function loginGoogle()
     {
-        $clientID = '241965399440-59ek83pl2u1scemevj8pbf868ctlgm2v.apps.googleusercontent.com';
-        $clientSecret = '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';
-        $redirectUrl = 'https://www.qceproba.com/';
+        $clientID = $GLOBALS['CFG']->clientID;
+        $clientSecret = $GLOBALS['CFG']->clientSecret;
+        $redirectUrl = $GLOBALS['CFG']->redirectUrl;
 
         $client = new Google_Client();
         $client->setClientId($clientID);
@@ -102,9 +102,9 @@ class UserController extends Controlador
                 throw new Exception("Authorization code not found.");
             }
             //Sobre el tocken y URL
-            $clientID = '241965399440-59ek83pl2u1scemevj8pbf868ctlgm2v.apps.googleusercontent.com';
-            $clientSecret = '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';
-            $redirectUrl = 'https://www.qceproba.com/';
+        $clientID = $GLOBALS['CFG']->clientID;
+        $clientSecret = $GLOBALS['CFG']->clientSecret;
+        $redirectUrl = $GLOBALS['CFG']->redirectUrl;
 
             $tokenEndpoint = 'https://oauth2.googleapis.com/token';
             $tokenParams = [
@@ -159,11 +159,11 @@ class UserController extends Controlador
                 // var_dump($userInfo);
                 // echo "</pre>";
                  ******************************************************/
-                header("Location: https://www.qceproba.com/");
+                header("Location: ".$GLOBALS['CFG']->url);
                 // return $userInfo;
             } else {
 
-                echo "<script>alert('No esta unido en la WEP, pide el administrador que añade tu usuario'); window.location.href = 'https://www.qceproba.com/';</script>";
+                echo "<script>alert('No esta unido en la WEP, pide el administrador que añade tu usuario'); window.location.href = '".$GLOBALS['CFG']->url."';</script>";
             }
         } catch (Exception $e) {
             // Exception
@@ -201,7 +201,7 @@ class UserController extends Controlador
             $newUser = new Usuari($email, $username, $admin);
 
             $result = $this->create($newUser);
-            header("Location: https://www.qceproba.com/?user/config");
+            header("Location: ".$GLOBALS['CFG']->url."/?user/config");
         } else {
             throw new Exception("No tienes el permiso de confiugrar los usuarios");
         }
@@ -228,7 +228,7 @@ class UserController extends Controlador
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['admin'] === 1) {
             $uModel = new UsuariModel();
             $uModel->delete($_POST["user_id"]);
-            header("Location: https://www.qceproba.com/?user/config");
+            header("Location: ".$GLOBALS['CFG']->url."/?user/config");
         } else {
             throw new Exception("No tienes el permiso de confiugrar los usuarios");
         }
@@ -248,7 +248,7 @@ class UserController extends Controlador
             $usuari->setId($uId);
             $uModel = new UsuariModel();
             $uModel->update($usuari);
-            header("Location: https://www.qceproba.com/?user/config");
+            header("Location: ".$GLOBALS['CFG']->url."/?user/config");
         } else {
             throw new Exception("No tienes el permiso de confiugrar los usuarios");
         }
@@ -293,7 +293,7 @@ class UserController extends Controlador
                     </div>
                     <div class='modal-footer'>
                         <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancel</button>
-                        <form id='deleteUserForm' action='https://www.qceproba.com/?user/delete' method='post'>
+                        <form id='deleteUserForm' action='".$GLOBALS['CFG']->url."/?user/delete' method='post'>
                             <input type='hidden' name='user_id' id='deleteUserId'>
                             <button type='submit' class='btn btn-danger'>Delete</button>
                         </form>
@@ -311,7 +311,7 @@ class UserController extends Controlador
                         <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                     </div>
                     <div class='modal-body'>
-                        <form id='editUserForm' action='https://www.qceproba.com/?user/update' method='post'>
+                        <form id='editUserForm' action='".$GLOBALS['CFG']->url."/?user/update' method='post'>
                             <input type='hidden' name='user_id' id='editUserId'>
                             <div class='mb-3'>
                                 <label for='editEmail' class='form-label'>Email</label>

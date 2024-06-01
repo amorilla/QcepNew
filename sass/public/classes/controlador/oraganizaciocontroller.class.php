@@ -1,4 +1,5 @@
 <?php
+
 class OraganizacioController extends Controlador
 {
     public function show()
@@ -45,7 +46,7 @@ class OraganizacioController extends Controlador
                     $portada = new Organizacio($nom, $email, $web, $targetFile);
                     $protadaModel = new OraganizacioModel();
                     $result = $protadaModel->update($portada);
-                    header("Location: https://www.qceproba.com/");
+                    header("Location: ".$GLOBALS['CFG']->url."/");
                 } else {
                     // Error while uploading file
                     echo "Sorry, there was an error uploading your file.";
@@ -91,7 +92,7 @@ class OraganizacioController extends Controlador
         $html .= "</div>
         <div class='mt-3'>
             <input type='submit' value='MODIFICAR' class='btn btn-primary'>
-            <a href='https://www.qceproba.com/?config/show' class='btn btn-secondary'>Volver</a>
+            <a href='".$GLOBALS['CFG']->url."/?config/show' class='btn btn-secondary'>Volver</a>
         </div>
     </form>";
         return $html;

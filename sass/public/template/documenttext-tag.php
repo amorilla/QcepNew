@@ -1,7 +1,9 @@
 <div class="container mt-4">
     <div class="row mb-4">
         <div class="col-md-6 text-right">
-            <a href="https://www.qceproba.com/"><button class="btn btn-danger btn-sm delete-document"><i class="fa-solid fa-arrow-left"></i></button></a>
+        <?php
+            echo '<a href="'.$GLOBALS['CFG']->url.'/"><button class="btn btn-danger btn-sm delete-document"><i class="fa-solid fa-arrow-left"></i></button></a>'
+        ?>
         </div>
         <div class="col-md-6 text-left">
             <h1><?php echo htmlspecialchars($document->getTitle()); ?></h1>

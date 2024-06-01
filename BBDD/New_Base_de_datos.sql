@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 -- Base de datos: `qcep`
 --
 
+use qcep;
+
 -- --------------------------------------------------------
 
 --
@@ -40,7 +42,7 @@ CREATE TABLE `apartat` (
 --
 
 INSERT INTO `apartat` (`nom`, `icono`, `descripcio`, `link`, `id`) VALUES
-('proba2', './img/portada/Captura desde 2024-05-05 23-53-20.png', 'Descriptcio', 'www.thosicodina.cat', 1);
+('proba2', './img/portada/Captura desde 2024-05-05 23-53-20.png', 'Descripció', 'https://www.thosicodina.cat', 1);
 
 -- --------------------------------------------------------
 

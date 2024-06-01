@@ -1,5 +1,6 @@
 <?php
 
+
 class AvaluacioController
 {
     public function create()
@@ -17,13 +18,13 @@ class AvaluacioController
         $avaluacio->__set('proces_id', $_POST['proces_id']);
 
         $aModel->create($avaluacio);
-        header("Location: https://www.qceproba.com/?document/show&process=" . $_POST["proces_id"]);
+        header("Location: ".$GLOBALS['CFG']->url."/?document/show&process=" . $_POST["proces_id"]);
     }
 
     public function delete()
     {
         $aModel = new AvaluacioModel();
         $aModel->deleteByID($_POST['id']);
-        header("Location: https://www.qceproba.com/?document/show&process=" . $_POST["proces_id"]);
+        header("Location: ".$GLOBALS['CFG']->url."/?document/show&process=" . $_POST["proces_id"]);
     }
 }

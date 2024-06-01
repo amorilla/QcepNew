@@ -1,10 +1,11 @@
 <!-- <?php
+
         //載入一次 'vendor/autoload.php' 這個文件
 
         //設定取得Google API 三要素：用戶端編號、用戶端密鑰、已授權的重新導向URI
-        $clientID = '241965399440-59ek83pl2u1scemevj8pbf868ctlgm2v.apps.googleusercontent.com';
-        $clientSecret = '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';
-        $redirectUrl = 'http://localhost/qcep/QcepNew/sass/public/index.php';
+        $clientID = $GLOBALS['CFG']->clientID;
+        $clientSecret = $GLOBALS['CFG']->clientSecret;
+        $redirectUrl = $GLOBALS['CFG']->redirectUrl;
 
         // 建立client端 的 request需求 給 Google
         $client = new Google_Client();
@@ -27,7 +28,7 @@
             $name = $google_info->name;
             $picture = $google_info->picture;
             echo "<img src='" . $picture . "' >Welcome Name:" . $name . " , You are registered using email: " . $email;
-            header('Location: http://localhost/qcep/QcepNew/sass/public/index.php?user/show');
+            header('Location: '.$GLOBALS['CFG']->url.'/index.php?user/show');
             exit();
         } else {
             echo "<a href='" . $client->createAuthUrl() . "'>Login with Google</a>";
@@ -76,6 +77,8 @@
 
 <script>
     document.getElementById('googleSignInButton').addEventListener('click', function() {
-        window.location.href = 'https://www.qceproba.com?user/loginGoogle';
+	<?php
+		echo "window.location.href = '".$GLOBALS['CFG']->url."?user/loginGoogle';";
+	?>
     });
 </script>

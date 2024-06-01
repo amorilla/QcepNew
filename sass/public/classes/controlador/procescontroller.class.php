@@ -73,7 +73,7 @@ class ProcesController extends Controlador
             var_dump($arrayPunto[0] . ' ' . $arrayPunto[1]);
             $pModel->create($pDatos, $arrayPunto[0], $arrayPunto[1]);
         }
-        header("Location: https://www.qceproba.com/?proces/show");
+        header("Location: ".$GLOBALS['CFG']->url."/?proces/show");
     }
     public function addshow()
     {
@@ -106,7 +106,7 @@ class ProcesController extends Controlador
             $pModel = new ProcesModel();
             $pModel->deleteById((int)$_POST["process"]);
 
-            header("Location: https://www.qceproba.com/?proces/show");
+            header("Location: ".$GLOBALS['CFG']->url."/?proces/show");
         }
     }
 
@@ -220,7 +220,7 @@ class ProcesController extends Controlador
         $html .= "<input type='hidden' name='interesValues' id='interesValues'>";
 
         $html .= "<button type='submit' class='btn btn-primary'>Crear proceso</button>";
-        $html .= "<a href='https://www.qceproba.com/?proces/show' class='btn btn-secondary ms-2'>Volver</a>";
+        $html .= "<a href='".$GLOBALS['CFG']->url."/?proces/show' class='btn btn-secondary ms-2'>Volver</a>";
 
         $html .= "</div></form>";
 
