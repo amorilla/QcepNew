@@ -7,10 +7,10 @@
                 <use xlink:href="#bootstrap"></use>
             </svg>
         </a>
-        <span class="mb-3 mb-md-0 text-muted">© 2022 Company, Inc</span>
+        <span class="mb-3 mb-md-0 text-muted">©2024 - Grup Qcep 2nDAW</span>
     </div>
 
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+    <ul class="nav col-md-4 align-items-center list-unstyled d-flex">
 
         <?php
         $protadaVista = new PortadaVista();
@@ -19,7 +19,8 @@
         $html = '';
 
         foreach ($result as $key => $value) {
-            $html .= "<li class='ms-3'><a href='{$value["link"]}' target='_blank'><img class='bi' width='24' height='24' src='{$value["icono"]}' title='{$value["nom"]}'></a></li>";
+            $descr = htmlentities($value["descripcio"]);
+            $html .= "<li class='ms-3'><a href='{$value["link"]}' target='_blank'><img class='bi' width='24' height='24' src='{$value["icono"]}' title='{$descr}'></a></li>";
         }
         echo $html;
 

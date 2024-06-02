@@ -9,14 +9,14 @@
 
 			<!-- Navigation -->
 			<ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
-				<li><a href="/" class="nav-link px-2 text-secondary">Inicio</a></li>
-				<li><a href="#" class="nav-link px-2 text-white">Menu</a></li>
+				<li><a href="/" class="nav-link px-2 text-secondary">Inici</a></li>
+				<li><a href="#" class="nav-link px-2 text-white">Menú</a></li>
 				<?php
 				if (isset($_SESSION["user_info"]) && $_SESSION['user_info']) {
-					echo "<li><a class='nav-link px-2 text-white' href='?proces/show'>Proceso</a></li>";
+					echo "<li><a class='nav-link px-2 text-white' href='?proces/show'>Processos</a></li>";
 				}
 				if (isset($_SESSION["admin"]) && $_SESSION["admin"] === 1) {
-					echo "<li><a class='nav-link px-2 text-white' href='?config/show'>Configuracion</a></li>";
+					echo "<li><a class='nav-link px-2 text-white' href='?config/show'>Configuració</a></li>";
 				}
 				?>
 			</ul>

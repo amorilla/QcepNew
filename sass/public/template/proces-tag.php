@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <!--Section 2-->
     <div class="text-center mb-4">
-        <h3>Proces</h3>
+        <h3>Processos</h3>
     </div>
     <!--Menu1-->
 

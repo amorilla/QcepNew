@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-3 font-size-18">Project Overview</h4>
+                <!-- <h4 class="mb-sm-3 font-size-18">Project Overview</h4> -->
                 <?php
                 if ($_SESSION["admin"] === 1) {
                     echo " <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#deleteModal'>
@@ -72,32 +72,14 @@
                                 <!-- Skote Dashboard UI -->
                                 <?php echo $proces->getTipus(); ?>
                             </h5>
-                            <p class="text-muted">Separate existence is a myth. For science, music, sport, etc.</p>
+                            <!-- <p class="text-muted">Separate existence is a myth. For science, music, sport, etc.</p> -->
                         </div>
                     </div>
 
-                    <h5 class="font-size-15 mt-4">Project Details :</h5>
+                    <h5 class="font-size-15 mt-4">Objectiu Principal</h5>
 
                     <p class="text-muted"> <?php echo $proces->getObjectiu(); ?></p>
 
-
-                    <div class="row task-dates">
-                        <div class="col-sm-4 col-6">
-                            <div class="mt-4">
-                                <h5 class="font-size-14"><i class="bx bx-calendar me-1 text-primary"></i> Start Date
-                                </h5>
-                                <p class="text-muted mb-0">08 Sept, 2019</p>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4 col-6">
-                            <div class="mt-4">
-                                <h5 class="font-size-14"><i class="bx bx-calendar-check me-1 text-primary"></i> Due
-                                    Date</h5>
-                                <p class="text-muted mb-0">12 Oct, 2019</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -125,7 +107,7 @@
             <div class="row">
                 <div class="card">
                     <div class="card-body">
-                        <h3>Puntos de Norma</h3>
+                        <h3>Punts de la norma</h3>
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <?php
@@ -200,11 +182,11 @@
                             foreach ($documents as $document) {
                                 $docId = $document->getId();
                                 echo '<tr>';
-                                echo '<td class="text-body">' . $document->getNom() . '</td>';
+                                //echo '<td class="text-body">' . $document->getNom() . '</td>';
                                 $link = $document->getLink();
                                 $maxLength = 30;
                                 $trimmedLink = strlen($link) > $maxLength ? substr($link, 0, $maxLength) . '...' : $link;
-                                echo '<td><a href="' . $document->getLink() . '" target="_blank">' . $trimmedLink . '</a></td>';
+                                echo '<td><a href="' . $document->getLink() . '" target="_blank">' . $document->getNom() . '</a></td>';
                                 if (isset($_SESSION['admin']) && $_SESSION['admin'] === 1) {
                                     echo '<td>';
                                     echo '<div class="btn-group">';
@@ -238,7 +220,7 @@
         <div class="col-xl-3">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Owner Member</h4><?php
+                    <h4 class="card-title mb-4">Responsable del procés</h4><?php
                                                                     $usuari_id = $proces->getUsuari_id();
                                                                     $uModel = new UsuariModel();
                                                                     $autor = $uModel->getUserByID($usuari_id);
@@ -371,7 +353,7 @@
                             <th>Valoració</th>
                             <th>Planificació</th>
                             <th>Accions</th>
-                            <th>Estrategia</th>';
+                            <th>Estratègia</th>';
 
     if (isset($_SESSION['admin']) && $_SESSION['admin'] === 1) {
         echo '<th>Edit</th>';

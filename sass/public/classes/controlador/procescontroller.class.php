@@ -219,7 +219,7 @@ class ProcesController extends Controlador
         $html .= "<input type='hidden' name='pNormaValues' id='pNormaValues'>";
         $html .= "<input type='hidden' name='interesValues' id='interesValues'>";
 
-        $html .= "<button type='submit' class='btn btn-primary'>Crear proceso</button>";
+        $html .= "<button type='submit' class='btn btn-primary'>Crea procés</button>";
         $html .= "<a href='".$GLOBALS['CFG']->url."/?proces/show' class='btn btn-secondary ms-2'>Volver</a>";
 
         $html .= "</div></form>";

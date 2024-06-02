@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /*******
  *
  *
- * Function para buscar los proceso con serach
+ * Function para buscar los procesos con search
  *
  *
  */
@@ -185,7 +185,7 @@ if (searchInput) {
 
 /**
  *
- * Function para buscar los usuario, grupos y username con SEARCH
+ * Function para buscar los usuarios, grupos y username con SEARCH
  */
 const searchInputUser = document.getElementById('searchTableListUser');
 // 获取表格内容行
@@ -275,7 +275,7 @@ document.getElementById('addPuntoNormaBtn').addEventListener('click', function (
 });
 
 
-//Añadir los grupos de interes
+//Añadir los grupos de interés
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('addInteres').addEventListener('click', function () {

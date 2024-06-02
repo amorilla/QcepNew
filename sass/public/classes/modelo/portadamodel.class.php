@@ -94,7 +94,7 @@ class PortadaModel implements CRUDable
         $descripcio = $obj->descripcio;
         $enllac = $obj->enllac;
 
-        $mysqli = mysqli_connect($GLOBALS['CFG']->dbhost, $GLOBALS['CFG']->dbuserread, $GLOBALS['CFG']->dbpass, $GLOBALS['CFG']->dbname);
+        $mysqli = mysqli_connect($GLOBALS['CFG']->dbhost, $GLOBALS['CFG']->dbuser, $GLOBALS['CFG']->dbpass, $GLOBALS['CFG']->dbname);
 
         if ($mysqli->connect_errno) {
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
@@ -142,7 +142,7 @@ class PortadaModel implements CRUDable
     {
         $id = $obj;
 
-        $mysqli = mysqli_connect($GLOBALS['CFG']->dbhost, $GLOBALS['CFG']->dbuserread, $GLOBALS['CFG']->dbpass, $GLOBALS['CFG']->dbname);
+        $mysqli = mysqli_connect($GLOBALS['CFG']->dbhost, $GLOBALS['CFG']->dbuser, $GLOBALS['CFG']->dbpass, $GLOBALS['CFG']->dbname);
 
         if ($mysqli->connect_errno) {
             die("Failed to connect to MySQL: " . $mysqli->connect_error);
@@ -177,7 +177,7 @@ class PortadaModel implements CRUDable
     }
     public function maxId()
     {
-        $mysqli = mysqli_connect($GLOBALS['CFG']->dbhost, $GLOBALS['CFG']->dbuserread, $GLOBALS['CFG']->dbpass, $GLOBALS['CFG']->dbname);
+        $mysqli = mysqli_connect($GLOBALS['CFG']->dbhost, $GLOBALS['CFG']->dbuser, $GLOBALS['CFG']->dbpass, $GLOBALS['CFG']->dbname);
 
         $sql = "SELECT MAX(id) AS max_id FROM apartat";
 

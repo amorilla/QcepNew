@@ -38,8 +38,7 @@ class UserController extends Controlador
 
     public function loginOut()
     {
-        unset($_SESSION['user_info']);
-        unset($_SESSION['access_token']);
+        unset($_SESSION);
         session_destroy();
         $home = new HomeController();
         $home->show();
