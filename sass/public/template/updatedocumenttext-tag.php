@@ -103,7 +103,7 @@
     document.getElementById('confirmDelete').addEventListener('click', function() {
         var form = document.createElement('form');
         form.method = 'post';
-        form.action = '$GLOBALS['CFG']->url."/?documenttext/delete"';
+        form.action = '<?php echo $GLOBALS['CFG']->url."/?documenttext/delete"; ?>';
 
         var input = document.createElement('input');
         input.type = 'hidden';

@@ -140,6 +140,7 @@ class UserController extends Controlador
                 if ($result[$i]["email"] === $userInfo["email"]) {
                     $esta = true;
                     $_SESSION['admin'] = (int)$result[$i]['es_administrador'];
+                    $_SESSION['user_id'] = (int)$result[$i]['id'];
                 }
             }
 

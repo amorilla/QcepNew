@@ -66,7 +66,7 @@ class DocumentTextController extends Controlador
             // 检查管理员权限和请求方法
             if ($_SESSION["admin"] === 1 && $_SERVER['REQUEST_METHOD'] == 'POST') {
                 $title = $_POST['title'];
-                $user_id = 7;
+                $user_id = $_SESSION['user_id'];
 
                 $documentModel = new DocumentTextoModel();
                 $document_id = $documentModel->create($title, $user_id);
@@ -145,7 +145,7 @@ class DocumentTextController extends Controlador
         try {
             if ($_SESSION["admin"] === 1 && $_SERVER['REQUEST_METHOD'] == 'POST') {
                 $title = $_POST['title'];
-                $user_id = 7;
+                $user_id = $_SESSION['user_id'];
 
                 $documentModel = new DocumentTextoModel();
                 $documentModel->update($dId, $title, $user_id);

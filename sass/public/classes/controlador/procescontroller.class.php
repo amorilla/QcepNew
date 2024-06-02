@@ -22,7 +22,8 @@ class ProcesController extends Controlador
         $pNom = $_POST['name'];
         $pTipo = $_POST['tipo'];
         $pObjectivo = $_POST['objetivo'];
-        $newProces = new Proces(null, $pNom, $pTipo, $pObjectivo, 7);
+        $userid = $_SESSION['user_id'];
+        $newProces = new Proces(null, $pNom, $pTipo, $pObjectivo, $userid);
         $pModel = new ProcesModel();
         $pDatos = $pModel->create($newProces);
 
