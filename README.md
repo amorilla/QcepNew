@@ -1,6 +1,7 @@
 # QcepNew  
-Project Qcep  
-Quality and continuous enhancement project
+**Project Qcep**  
+Quality and continuous enhancement project  
+  
 Se trata de un sistema de gestión de la documentación de la norma de calidad ISO9001.
 Sería un sistema simplificado, ya que sólo debe encargarse de la clasificación y el acceso a
 todos los documentos que intervienen en el Sistema de Gestión de Calidad.
