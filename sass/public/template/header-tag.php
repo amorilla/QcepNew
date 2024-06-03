@@ -37,7 +37,11 @@
 				</a>
 				<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
 					<li><a class="dropdown-item" href="#">New project...</a></li>
-					<li><a class="dropdown-item" href="?config/show">Settings</a></li>
+					<?php
+					if (isset($_SESSION['admin']) && $_SESSION['admin']===1) {
+						echo '<li><a class="dropdown-item" href="?config/show">Configuració</a></li>';
+					}
+					?>
 					<li><a class="dropdown-item" href="#">Profile</a></li>
 					<li>
 						<hr class="dropdown-divider">

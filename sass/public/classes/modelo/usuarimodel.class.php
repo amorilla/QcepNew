@@ -35,9 +35,9 @@ class UsuariModel implements CRUDable
             $email = $obj->getEmail();
             $isAdmin = $obj->getAdmin();
 
-            // Compronar si existe el correo o no.
+            // Comprobar si existe el correo o no.
             if ($this->existCorreo($email)) {
-                return "exist";
+                return -1;
             }
 
             //Comprobar si es vacio el grupo o no
@@ -51,8 +51,11 @@ class UsuariModel implements CRUDable
             $statement->bindParam(':isAdmin', $isAdmin);
 
             $statement->execute();
-
-            return true;
+            $result = $this->pdo->lastInsertId("id");
+            if ($result > 0) {
+            	return $result;
+            }
+            return -1;
         } catch (PDOException $e) {
             die("Error creating user: " . $e->getMessage());
         }

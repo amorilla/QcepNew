@@ -2,13 +2,13 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="mt-5">
-                <h1 class="text-center mb-4">Configuración</h1>
+                <h1 class="text-center mb-4">Configuració</h1>
                 <ul class="list-group">
                     <?php if ($_SESSION["admin"] === 1) : ?>
                         <li class="list-group-item"><a href="?portada/show" class="text-decoration-none">Portada</a></li>
-                        <li class="list-group-item"><a href="?oraganizacio/show" class="text-decoration-none">Organización</a></li>
-                        <li class="list-group-item"><a href="?user/config" class="text-decoration-none">Configuración Usuario</a></li>
-                        <li class="list-group-item"><a href="?documenttext/showall" class="text-decoration-none">Documentos</a></li>
+                        <li class="list-group-item"><a href="?oraganizacio/show" class="text-decoration-none">Organització</a></li>
+                        <li class="list-group-item"><a href="?user/config" class="text-decoration-none">Configuració Usuaris</a></li>
+                        <li class="list-group-item"><a href="?documenttext/showall" class="text-decoration-none">Documents</a></li>
                     <?php endif; ?>
                     <svg class="bi" width="16" height="16" fill="currentColor">
                         <use xlink:href="#people-fill" />

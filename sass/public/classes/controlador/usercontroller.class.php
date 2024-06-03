@@ -132,7 +132,6 @@ class UserController extends Controlador
             $accessToken = $tokenData['access_token'];
 
             $userInfo = $this->getUserInfo($accessToken);
-
             $userModel = new UsuariModel();
             $result = $userModel->read();
             $esta = false;
@@ -144,27 +143,22 @@ class UserController extends Controlador
                 }
             }
 
-            if ($esta == true) {
-                //Guardar los datos de usuario en una session
-                $_SESSION['user_info'] = $userInfo;
-                //Guardar el token de usuario en la session
-                $_SESSION['access_token'] = $accessToken;
-
-                /****************************************************
-                // // Prova：Retornar los datos de usuario -->Consegido tener los datos de usuario y permiso de Google Drive√
-                // if($userInfo == null){
-                //     echo "1";
-                // }
-                // echo "<pre>";
-                // var_dump($userInfo);
-                // echo "</pre>";
-                 ******************************************************/
-                header("Location: ".$GLOBALS['CFG']->url);
-                // return $userInfo;
-            } else {
-
-                echo "<script>alert('No esta unido en la WEP, pide el administrador que añade tu usuario'); window.location.href = '".$GLOBALS['CFG']->url."';</script>";
+            if (!$esta) {
+            	$newUser = new Usuari($userInfo["email"], $userInfo["name"], 0);
+            	$userModel = new UsuariModel;
+                $result = $userModel->create($newUser);
+                if ($result<=0) {
+	                echo "<script>alert('No s\'ha pogut crear l\'usuari');</script>";
+                	return ['error' => true, 'message' => 'No s\'ha pogut crear l\'usuari'];
+                }
+                $_SESSION['admin'] = 0;
+                $_SESSION['user_id'] = $result;
             }
+            //Guardar los datos de usuario en una session
+            $_SESSION['user_info'] = $userInfo;
+            //Guardar el token de usuario en la session
+            $_SESSION['access_token'] = $accessToken;
+            header("Location: ".$GLOBALS['CFG']->url);
         } catch (Exception $e) {
             // Exception
             return ['error' => true, 'message' => $e->getMessage()];
@@ -203,7 +197,7 @@ class UserController extends Controlador
             $result = $this->create($newUser);
             header("Location: ".$GLOBALS['CFG']->url."/?user/config");
         } else {
-            throw new Exception("No tienes el permiso de confiugrar los usuarios");
+            throw new Exception("No tienes el permiso de configurar los usuarios");
         }
     }
 
@@ -214,7 +208,7 @@ class UserController extends Controlador
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['admin'] === 1) {
             $userModel = new UsuariModel;
             $creado = $userModel->create($user);
-            if ($creado) {
+            if ($creado>0) {
                 return true;
             } else {
                 return false;
